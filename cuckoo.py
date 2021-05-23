@@ -7,58 +7,78 @@ class Table(enum.Enum):
 class Cuckoo:
     max_size = 0
     current_size = 0
+    # selected_table:Table = Table.Table_A
 
-    def __init__(self,data):
+    def __init__(self,data:dict = dict()):
+
+        #initial data must only be dictionary. since python sucks does not have proper type safety. 
+        if not type(data) == dict:
+            raise Exception("Batch insert of dictionary allowed only. Please provide a valid dictionary")
+                
         
         #Setting max length of each has table to 3 times the initial data's size.
-        self.max_size = len(data) * 3
+        self.max_size = len(data.keys()) * 3
 
 
         #Creating two hashtables
         self.tableA = [None for x in range(self.max_size)]
         self.tableB = [None for x in range(self.max_size)]
 
-        self.batch_insert(data)
+        self.insert_all(data)
+
+
+
+    #Get size of data
+    def __len__(self):
+        return self.current_size
+
+
+    def __setitem__(self,key,value):
+        key_value_pair = (key,value)
+        self.push(key_value_pair)
+
+
+
+    #get value at index
+    def __getitem__(self,index:int,table):
+        assert index < self.max_size
+        return self.tableA[index] if table == Table.Table_A else self.tableB[index]
+
 
 
     #batch insert data from a list
-    def batch_insert(self,data):
-        for i in data:
-            self.push(i)
+    def insert_all(self,data):
+        for key in data.keys():
+            self[key] = data[key]
     
 
-    #insert item to index. index is optional
-    def push(self,item,index = -1):
+    def push(self,item) -> bool:
+        index_a = self.hash(1,Table.Table_A)
+        index_b = self.hash(1,Table.Table_B)
 
-        if index == -1:
-            index == self.current_size
-
-        self.current_size += 1
+        if self.tableA[index_a] == None:
 
 
-    #select table to insert into
-    def select_table(self,item,index,iteration):
-        pass
+
+
+
+
 
 
     #TODO: Change hashing functions
 
     #hashing function
     #returns a key depending on the hash table selected
-    def hash(self,index,table):
+    def hash(self,item,table:Table):
         if (type == Table.Table_A):
-            return index*2 % self.max_size
+            return item*2 % self.max_size
         
-        return index % self.max_size 
+        return item % self.max_size 
 
-    #Insert item
-    def insert(self,item):
-        pass
+    # #Insert item
+    # def insert(self,item):
+    #     pass
 
-
-    #Get size of data
-    def len(self):
-        return self.current_size
 
 
 
