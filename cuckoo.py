@@ -95,11 +95,11 @@ class Cuckoo:
         keys = []
 
         for index in self.occupied_indexes:
-            if index[0] == "1":
+            if index[0] == str(Table.Table_A.value):
                 index_table = int(index[1:]) 
                 keys.append(self.tableA[index_table][0])
 
-            if index[0] == "2":
+            if index[0] == str(Table.Table_B.value):
                 index_table = int(index[1:]) 
                 keys.append(self.tableB[index_table][0])
 
