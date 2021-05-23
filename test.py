@@ -11,7 +11,7 @@ def test_data_insert():
     for key in sample_keys:
         sample_data[key] = key + "-value"
 
-    table = Cuckoo([sample_data])
+    table = Cuckoo(sample_data)
 
     original_data = []
     hash_table_data = []
@@ -23,6 +23,9 @@ def test_data_insert():
         original_data.append(sample_data[key])
         hash_table_data.append(table[key])
 
+
+    print("TABLE DATA ")
+    table.dump_data()
            
     assert hash_table_data == original_data
 

@@ -1,4 +1,5 @@
 import enum
+from copy import deepcopy
 
 class Table(enum.Enum):
     Table_A = 1
@@ -12,6 +13,8 @@ class Cuckoo:
     max_iterations = 10
     resize_multiplier = 3
 
+    
+
     def __init__(self,data:dict = dict()):
 
         #initial data must only be dictionary. since python sucks does not have proper type safety. 
@@ -21,13 +24,15 @@ class Cuckoo:
         
         #Setting max length of each has table to 3 times the initial data's size.
         self.max_size = len(data.keys()) * 3
-
+        self.occupied_indexes = []
 
         #Creating two hashtables
         self.tableA = [None for x in range(self.max_size)]
         self.tableB = [None for x in range(self.max_size)]
 
         self.insert_all(data)
+
+        print("BATCH INSERTING: "+str(data))
 
 
 
@@ -42,11 +47,41 @@ class Cuckoo:
 
 
 
-    #get value at index
-    def __getitem__(self,index:int,table):
-        assert index < self.max_size
-        return self.tableA[index] if table == Table.Table_A else self.tableB[index]
+    #get value at key
+    def __getitem__(self,key):
+        index_a = self.hash(key,Table.Table_A) 
+        index_b = self.hash(key,Table.Table_B) 
 
+        # print("Hash Value Index A "+ str(index_a))
+        # print("Hash Value Index B "+ str(index_b))
+        # print("Table Size "+ str(self.max_size))
+
+
+        if self.tableA[index_a] != None and self.tableA[index_a][0] == key:
+            return self.tableA[index_a][1]
+        
+        if self.tableB[index_b] != None and self.tableB[index_b][0] == key:
+            return self.tableB[index_b][1]
+        
+
+        print("NOT FOUND: "+str(key))
+        return None
+
+
+    def keys(self):
+        
+        keys = []
+
+        for index in self.occupied_indexes:
+            if index[0] == "1":
+                index_table = int(index[1:]) 
+                keys.append(self.tableA[index_table][0])
+
+            if index[0] == "2":
+                index_table = int(index[1:]) 
+                keys.append(self.tableB[index_table][0])
+
+        return keys
 
 
     #batch insert data from a list
@@ -55,37 +90,67 @@ class Cuckoo:
             self[key] = data[key]
     
 
+    #Side note: out occupied indexes actually follow a pattern. 
+    #At the first index of the string we have the table. The other thing is the key      
+    def insert_into_table(self,item,index:int,table:Table):
+
+        carry_over_value = None
+
+        if self.selected_table == Table.Table_A:
+            carry_over_value = self.tableA[index]
+            self.tableA[index] = item
+
+            print("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+
+            self.occupied_indexes.append(str(table.value)+str(index))
+
+
+        if self.selected_table == Table.Table_B:
+            carry_over_value = self.tableB[index]
+            self.tableB[index] = item
+
+            print("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+
+            self.occupied_indexes.append(str(table.value)+str(index))
+
+
+        if carry_over_value != None:    
+            print("CARRY OVER VALUE: "+str(carry_over_value))
+            print("REMOVED FROM NEST: "+str(table.value))
+
+        return carry_over_value
 
 
     def push(self,item, count = 0) -> bool:
+        print("\nINSERTING ITEM: "+str(item))
+        print("SELECTED TABLE "+str(self.selected_table.value))
+        print("-----------------------------")
 
 
         #We have reached maximum number of iterations of insert.
         #At this point too many birds have died in our endless desire of inserting things
         #Time to rehash and evaluate if it is really worth killing cute little birds
-        if count == max_iterations:
+        if count == self.max_iterations:
             self.re_hash()
 
             #We'll still try to insert it tho. 
             return self.push(item)
             #comment above line and uncomment below one if we go into an infinite loop
-            return False
+            #return False
 
-
-        index = self.hash(1,self.selected_table)
+        item_key = item[0]
+        index = self.hash(item_key,self.selected_table)
 
         carry_over_value = None
         
         #insert into A if it is selected
         if self.selected_table == Table.Table_A:
-            carry_over_value = self.tableA[index]
-            self.tableA[index] = item
+            carry_over_value = self.insert_into_table(item,index,Table.Table_A)
             
         
         #insert into B if it is selected
         if self.selected_table == Table.Table_B:
-            carry_over_value = self.tableB[index]
-            self.tableB[index] = item
+            carry_over_value = self.insert_into_table(item,index,Table.Table_B)
         
         #There was no egg in that position in the nest, so no birdy dies today :))
         if carry_over_value == None:
@@ -94,33 +159,52 @@ class Cuckoo:
 
         #There was a birdy in that place. Time to move him some where else
         #We are also switching the selected table
-        self.selected_table = Table.Table_A if self.selected_table == Table.Table_A else Table.Table_B
-        self.push(self,carry_over_value,count + 1)
+        self.selected_table = Table.Table_B if self.selected_table == Table.Table_A else Table.Table_A
+        self.push(carry_over_value,count + 1)
 
 
     
     def re_hash(self):
-        new_size = self.max_size * resize_multiplier
+        new_size = self.max_size * self.resize_multiplier
         
+        #make a copy of our current data
+        copy_self = deepcopy(self)
+
+
         #create new big tables to store our old data
-        new_table_a = [None for x in range(new_size)]
-        new_table_b = [None for x in range(new_size)]
+        self.tableA = [None for x in range(new_size)]
+        self.tableB = [None for x in range(new_size)]
+
+        self.current_size = 0
+        self.selected_table = Table.Table_A
+
+        self.insert_all(copy_self)
+
+
 
 
     #TODO: Change hashing functions
 
     #hashing function
     #returns a key depending on the hash table selected
-    def hash(self,item,table:Table):
-        if (type == Table.Table_A):
-            return item*2 % self.max_size
+    def hash(self,key,table:Table):
         
-        return item % self.max_size 
+        hash_value = hash(key)
+
+
+        if (table == Table.Table_A):
+            return int(hash_value/11) % self.max_size
+        
+        return hash_value % self.max_size 
 
     # #Insert item
     # def insert(self,item):
     #     pass
 
+
+    def dump_data(self):
+        print("TABLE A: "+str(self.tableA))
+        print("TABLE B: "+str(self.tableB))
 
 
 
