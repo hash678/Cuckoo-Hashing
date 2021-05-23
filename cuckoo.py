@@ -25,7 +25,7 @@ class Cuckoo:
                 
         
         #Setting max length of each has table to 3 times the initial data's size.
-        self.max_size = len(data.keys()) * 3
+        self.max_size = max(len(data.keys()) * 3,100)
         self.occupied_indexes = []
 
         #Creating two hashtables
