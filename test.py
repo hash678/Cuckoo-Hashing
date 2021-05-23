@@ -9,7 +9,7 @@ def test_data_insert():
     sample_data = dict()
 
     for key in sample_keys:
-        sample_data[key] = key + "-value"
+        sample_data[key] = key + str(random.randint(0,100))
 
     table = Cuckoo(sample_data)
 
@@ -35,7 +35,7 @@ def test_data_insert_large():
     sample_data = dict()
 
     for key in sample_keys:
-        sample_data[key] = key + "-value"
+        sample_data[key] = key + str(random.randint(0,size))
 
     table = Cuckoo(sample_data)
 
