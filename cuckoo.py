@@ -1,5 +1,6 @@
 import enum
 from copy import deepcopy
+from helper import *
 
 class Table(enum.Enum):
     Table_A = 1
@@ -11,7 +12,8 @@ class Cuckoo:
     selected_table:Table = Table.Table_A
     
     max_iterations = 10
-    resize_multiplier = 3
+    resize_multiplier = 2
+
 
     
 
@@ -32,7 +34,7 @@ class Cuckoo:
 
         self.insert_all(data)
 
-        print("BATCH INSERTING: "+str(data))
+        log("BATCH INSERTING: "+str(data))
 
 
 
@@ -52,9 +54,9 @@ class Cuckoo:
         index_a = self.hash(key,Table.Table_A) 
         index_b = self.hash(key,Table.Table_B) 
 
-        # print("Hash Value Index A "+ str(index_a))
-        # print("Hash Value Index B "+ str(index_b))
-        # print("Table Size "+ str(self.max_size))
+        # log("Hash Value Index A "+ str(index_a))
+        # log("Hash Value Index B "+ str(index_b))
+        # log("Table Size "+ str(self.max_size))
 
 
         if self.tableA[index_a] != None and self.tableA[index_a][0] == key:
@@ -64,7 +66,7 @@ class Cuckoo:
             return self.tableB[index_b][1]
         
 
-        print("NOT FOUND: "+str(key))
+        log("NOT FOUND: "+str(key))
         return None
 
 
@@ -90,6 +92,17 @@ class Cuckoo:
             self[key] = data[key]
     
 
+
+    def replace_value(self,index:int,newValue,table:Table):
+        log("REPLACING VALUE")
+
+        if table == Table.Table_A:
+            self.tableA[index] = (self.tableA[index][0],newValue)
+        else:
+            self.tableB[index] = (self.tableB[index][0],newValue)
+
+
+
     #Side note: out occupied indexes actually follow a pattern. 
     #At the first index of the string we have the table. The other thing is the key      
     def insert_into_table(self,item,index:int,table:Table):
@@ -100,7 +113,7 @@ class Cuckoo:
             carry_over_value = self.tableA[index]
             self.tableA[index] = item
 
-            print("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+            log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
 
             self.occupied_indexes.append(str(table.value)+str(index))
 
@@ -109,22 +122,28 @@ class Cuckoo:
             carry_over_value = self.tableB[index]
             self.tableB[index] = item
 
-            print("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+            log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
 
             self.occupied_indexes.append(str(table.value)+str(index))
 
 
         if carry_over_value != None:    
-            print("CARRY OVER VALUE: "+str(carry_over_value))
-            print("REMOVED FROM NEST: "+str(table.value))
+            log("CARRY OVER VALUE: "+str(carry_over_value))
+            log("REMOVED FROM NEST: "+str(table.value))
+
+            if carry_over_value[0] == item[0]:
+                self.replace_value(index,carry_over_value[1],table)
+                carry_over_value = None
+
+
 
         return carry_over_value
 
 
     def push(self,item, count = 0) -> bool:
-        print("\nINSERTING ITEM: "+str(item))
-        print("SELECTED TABLE "+str(self.selected_table.value))
-        print("-----------------------------")
+        log("\nINSERTING ITEM: "+str(item))
+        log("SELECTED TABLE "+str(self.selected_table.value))
+        log("-----------------------------")
 
 
         #We have reached maximum number of iterations of insert.
@@ -163,25 +182,32 @@ class Cuckoo:
         self.push(carry_over_value,count + 1)
 
 
+    def clear(self):
+        #create new big tables to store our old data
+        self.tableA = [None for x in range(self.max_size)]
+        self.tableB = [None for x in range(self.max_size)]
+
+        self.current_size = 0
+        self.selected_table = Table.Table_A
+        self.occupied_indexes = []
+
     
     def re_hash(self):
-        new_size = self.max_size * self.resize_multiplier
         
         #make a copy of our current data
         copy_self = deepcopy(self)
 
+        self.max_size = self.max_size * self.resize_multiplier
+        self.clear()
 
-        #create new big tables to store our old data
-        self.tableA = [None for x in range(new_size)]
-        self.tableB = [None for x in range(new_size)]
-
-        self.current_size = 0
-        self.selected_table = Table.Table_A
 
         self.insert_all(copy_self)
 
 
 
+
+    def bound_value(self,value,bound):
+        return int(value % bound)
 
     #TODO: Change hashing functions
 
@@ -193,19 +219,13 @@ class Cuckoo:
 
 
         if (table == Table.Table_A):
-            return int(hash_value/11) % self.max_size
+            return self.bound_value(hash_value/11,self.max_size) 
         
-        return hash_value % self.max_size 
+        return self.bound_value(hash_value,self.max_size)
 
-    # #Insert item
-    # def insert(self,item):
-    #     pass
 
 
     def dump_data(self):
-        print("TABLE A: "+str(self.tableA))
-        print("TABLE B: "+str(self.tableB))
+        log("TABLE A: "+str(self.tableA))
+        log("TABLE B: "+str(self.tableB))
 
-
-
-    
