@@ -26,6 +26,9 @@ class Cuckoo:
         
         #Setting max length of each has table to 3 times the initial data's size.
         self.max_size = max(len(data.keys()) * 3,100)
+
+        #Side note: out occupied indexes actually follow a pattern. 
+        #At the first index of the string we have the table. The other thing is the key   
         self.occupied_indexes = []
 
         #Creating two hashtables
@@ -48,26 +51,43 @@ class Cuckoo:
         self.push(key_value_pair)
 
 
+    def __contains__(self,key):
+        index_data = self.get_item_index(key)
+        return index_data != None
 
-    #get value at key
+
     def __getitem__(self,key):
-        index_a = self.hash(key,Table.Table_A) 
-        index_b = self.hash(key,Table.Table_B) 
+        index_data = self.get_item_index(key)
 
-        # log("Hash Value Index A "+ str(index_a))
-        # log("Hash Value Index B "+ str(index_b))
-        # log("Table Size "+ str(self.max_size))
-
-
-        if self.tableA[index_a] != None and self.tableA[index_a][0] == key:
-            return self.tableA[index_a][1]
+        if index_data == None:
+            return None
         
-        if self.tableB[index_b] != None and self.tableB[index_b][0] == key:
-            return self.tableB[index_b][1]
+        index, table = index_data
+
+
+        if self.tableA[index] != None and self.tableA[index][0] == key:
+            return self.tableA[index][1]
+        
+        if self.tableB[index] != None and self.tableB[index][0] == key:
+            return self.tableB[index][1]
         
 
-        log("NOT FOUND: "+str(key))
-        return None
+    def pop(self,key):
+        index_data = self.get_item_index(key)
+
+        if index_data == None:
+            return False
+        
+        index, table = index_data
+
+
+        if self.tableA[index] != None and self.tableA[index][0] == key:
+            self.tableA[index] = None
+            return True
+        
+        if self.tableB[index] != None and self.tableB[index][0] == key:
+            self.tableB[index] = None
+            return True
 
 
     def keys(self):
@@ -92,7 +112,7 @@ class Cuckoo:
             self[key] = data[key]
     
 
-
+    #replace value if already exists
     def replace_value(self,index:int,newValue,table:Table):
         log("REPLACING VALUE")
 
@@ -103,8 +123,7 @@ class Cuckoo:
 
 
 
-    #Side note: out occupied indexes actually follow a pattern. 
-    #At the first index of the string we have the table. The other thing is the key      
+       
     def insert_into_table(self,item,index:int,table:Table):
 
         carry_over_value = None
@@ -138,6 +157,23 @@ class Cuckoo:
 
 
         return carry_over_value
+
+
+
+    #get index 
+    def get_item_index(self,key) -> (int,Table):
+        index_a = self.hash(key,Table.Table_A) 
+        index_b = self.hash(key,Table.Table_B) 
+
+
+        if self.tableA[index_a] != None and self.tableA[index_a][0] == key:
+            return(index_a,Table.Table_A)
+        
+        if self.tableB[index_b] != None and self.tableB[index_b][0] == key:
+            return(index_b,Table.Table_B)
+        
+        log("NOT FOUND: "+str(key))
+        return None
 
 
     def push(self,item, count = 0) -> bool:
@@ -205,11 +241,11 @@ class Cuckoo:
 
 
 
-
+    #bounding function. can be changed to optimize code.
     def bound_value(self,value,bound):
         return int(value % bound)
 
-    #TODO: Change hashing functions
+
 
     #hashing function
     #returns a key depending on the hash table selected
