@@ -2,7 +2,7 @@ from cuckoo import Cuckoo
 import random
 
 
-
+#Batch insert and retrieval tests 
 def data_insert(size):
     sample_keys = ['key'+str(x**2) for x in range(size)]
 
@@ -25,7 +25,7 @@ def data_insert(size):
 
     return hash_table_data == original_data
 
-
+#Random inserts and retrieval tests 
 def random_inserts(size):
     
     sample_keys = ['key'+str(x**2) for x in range(size)]
