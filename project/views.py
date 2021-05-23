@@ -10,7 +10,13 @@ from .models import *
 from datetime import datetime
 from django.views.generic.list import BaseListView
 
+from cuckoo import *
+
+# A persistent data storage thingy
+table = Cuckoo()
 
 def index(request):
     return render(request, "index.html")
+
+
 
