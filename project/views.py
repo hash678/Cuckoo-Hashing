@@ -19,7 +19,7 @@ cuckoo = False
 if cuckoo:
     employees = Cuckoo()
 else:
-    employees = ChainedDict()
+    employees = Chain()
 
 
 employees = {}
@@ -32,6 +32,7 @@ with open('records.csv', newline='') as f:
 cols = data[0]
 del data[0]
 
+
 for entry in data:
     id = entry[0]
     employee_data = {}
@@ -40,10 +41,9 @@ for entry in data:
     employees[id] = employee_data
 
 
-
 def index(request):
     return render(request, "index.html", {
-        'employees': employees
+        'employees': [employees[id] for id in employees ]
     })
 
 

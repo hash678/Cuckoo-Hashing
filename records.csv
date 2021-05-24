@@ -1,4 +1,4 @@
-﻿ID,Name Prefix,First Name,Middle Initial,Last Name,Gender,E Mail,Date of Birth,Age in Yrs.,Weight in Kgs.,Date of Joining,Salary,SSN,Phone No. ,City,Region
+﻿ID,Name Prefix,FirstName,MiddleInitial,LastName,Gender,EMail,DateofBirth,AgeinYrs.,WeightinKgs.,DateofJoining,Salary,SSN,PhoneNo. ,City,Region
 198429,Mrs.,Serafina,I,Bumgarner,F,serafina.bumgarner@exxonmobil.com,9/21/1982,34.87,45,2/1/2008,69294,063-02-3609,212-376-9125,Clymer,Northeast
 178566,Mrs.,Juliette,M,Rojo,F,juliette.rojo@yahoo.co.uk,5/8/1967,50.26,55,6/4/2011,193912,671-48-9915,215-254-9594,Glenside,Northeast
 647173,Mr.,Milan,F,Krawczyk,M,milan.krawczyk@hotmail.com,4/4/1980,37.34,68,1/19/2012,123681,527-99-6328,240-748-4111,Gibson Island,South
