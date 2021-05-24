@@ -15,13 +15,6 @@
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Username">
         </div>
-        <select  class="form-group" name="type" id="type" style="width:250px; height: 50px; margin-left: 10px;">
-            <option value='' disabled selected>Select a category</option>
-            {% for type in types %}
-                <option value={{type.ID}}>{{type.typeName}}</option>
-            {% endfor %}
-        </select>
-
         <select  class="form-group" name="gender" id="gender" style="width:250px; height: 50px; margin-left: 10px;">
                 <option value="" disabled selected>Select your Gender</option>
                 <option value="Male">Male</option>

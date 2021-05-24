@@ -10,14 +10,44 @@ from .models import *
 from datetime import datetime
 from django.views.generic.list import BaseListView
 
+# import hash tables
 from cuckoo import *
+from chaining import *
+
+cuckoo = False
+
+if cuckoo:
+    employees = Cuckoo()
+else:
+    employees = ChainedDict()
 
 
-table = {}
+employees = {}
+
+import csv
+with open('records.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
+
+cols = data[0]
+del data[0]
+
+for entry in data:
+    id = entry[0]
+    employee_data = {}
+    for i in range(1, len(cols) ):
+        employee_data[cols[i]] = entry[i]
+    employees[id] = employee_data
+
+
 
 def index(request):
-    return render(request, "index.html")
+    return render(request, "index.html", {
+        'employees': employees
+    })
 
+
+#---------------Login and Registering Views---------------#
 
 def login_view(request):
     if request.method == "POST":

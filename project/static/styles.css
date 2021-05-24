@@ -1,5 +1,6 @@
 body {
     background:#222;
+    color: white;
 }
 
 
@@ -114,4 +115,14 @@ body {
     transform: rotateX(-90deg);
     -webkit-transform: rotateX(-90deg);
     -moz-transform: rotateX(-90deg);
+}
+
+
+.center {
+    text-align: center;
+}
+
+div {
+    color: white;
+    font-family: 'Roboto';
 }
