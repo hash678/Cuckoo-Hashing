@@ -1,16 +1,10 @@
-from chaining import *
 from cuckoo import *
+from chain import *
 
-cuckoo = False
-
-if cuckoo:
-    employees = Cuckoo()
-else:
-    employees = ChainedDict()
-
+employees1 = Cuckoo()
+employees2 = Chain()
 
 import csv
-
 with open('records.csv', newline='') as f:
     reader = csv.reader(f)
     data = list(reader)
@@ -18,23 +12,33 @@ with open('records.csv', newline='') as f:
 cols = data[0]
 del data[0]
 
+lst = []
+
 for entry in data:
     id = entry[0]
     employee_data = {}
-    for i in range(1, len(cols) ):
+    for i in range(0, len(cols) ):
         employee_data[cols[i]] = entry[i]
-    employees[id] = employee_data
+
+    employees1[id] = employee_data
+    employees2[id] = employee_data
+
+    lst.append(id)
+
+lst1 = []
+lst2 = []
 
 
-# print("""Add new employeee: Press 'A' 
-# Delete a employee: Enter 'D'
-# Lookup for a employee: Enter 'S'""")
+#cuckoo
+for id in employees1.keys():
+    lst1.append(employees1[id]['ID'])
 
-# x = input()
-
-
-
-
+#chain
+for employee in employees2:
+    lst2.append(employee[1]['ID'])
 
 
+lst = sorted(lst)    #original ids
+lst1 = sorted(lst1)  #cuckoo hashed
+lst2 = sorted(lst2)  #chain hashed
 

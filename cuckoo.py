@@ -265,3 +265,6 @@ class Cuckoo:
         log("TABLE A: "+str(self.tableA))
         log("TABLE B: "+str(self.tableB))
 
+
+    
+
