@@ -12,7 +12,7 @@ from django.views.generic.list import BaseListView
 
 # import hash tables
 from cuckoo import *
-from chaining import *
+from chain import *
 
 cuckoo = False
 

@@ -2,6 +2,14 @@ import enum
 from copy import deepcopy
 from helper import *
 
+import os
+import sys
+hashseed = os.getenv('PYTHONHASHSEED')
+if not hashseed or hashseed is None:
+    os.environ['PYTHONHASHSEED'] = '0'
+    os.execv(sys.executable, [sys.executable] + sys.argv)
+
+
 class Table(enum.Enum):
     Table_A = 1
     Table_B = 2
@@ -121,10 +129,13 @@ class Cuckoo:
         else:
             self.tableB[index] = (self.tableB[index][0],newValue)
 
+        # self.occupied_indexes.pop(str(table.value)+str(index))
+
 
 
        
     def insert_into_table(self,item,index:int,table:Table):
+
 
         carry_over_value = None
 
@@ -135,9 +146,8 @@ class Cuckoo:
             log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
 
             self.occupied_indexes.append(str(table.value)+str(index))
-
-
-        if self.selected_table == Table.Table_B:
+            
+        elif self.selected_table == Table.Table_B:
             carry_over_value = self.tableB[index]
             self.tableB[index] = item
 
@@ -150,6 +160,9 @@ class Cuckoo:
             log("CARRY OVER VALUE: "+str(carry_over_value))
             log("REMOVED FROM NEST: "+str(table.value))
 
+           
+            self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
+
             if carry_over_value[0] == item[0]:
                 self.replace_value(index,carry_over_value[1],table)
                 carry_over_value = None
@@ -161,10 +174,12 @@ class Cuckoo:
 
 
     #get index 
-    def get_item_index(self,key) -> (int,Table):
+    def get_item_index(self,key) -> tuple:
         index_a = self.hash(key,Table.Table_A) 
         index_b = self.hash(key,Table.Table_B) 
 
+        # print(index_a)
+        # print(index_b)
 
         if self.tableA[index_a] != None and self.tableA[index_a][0] == key:
             return(index_a,Table.Table_A)
@@ -172,7 +187,7 @@ class Cuckoo:
         if self.tableB[index_b] != None and self.tableB[index_b][0] == key:
             return(index_b,Table.Table_B)
         
-        log("NOT FOUND: "+str(key))
+
         return None
 
 
@@ -180,6 +195,15 @@ class Cuckoo:
         log("\nINSERTING ITEM: "+str(item))
         log("SELECTED TABLE "+str(self.selected_table.value))
         log("-----------------------------")
+
+
+
+        itemIndex = self.get_item_index(item[0])
+        # print("i "+item[0])
+        if itemIndex != None:
+            # print("FOUND DUPLICATE")
+            self.replace_value(itemIndex[0],item[1],itemIndex[1])
+
 
 
         #We have reached maximum number of iterations of insert.
@@ -253,15 +277,26 @@ class Cuckoo:
         
         hash_value = hash(key)
 
+        
 
         if (table == Table.Table_A):
             return self.bound_value(hash_value/11,self.max_size) 
         
-        return self.bound_value(hash_value,self.max_size)
+        hashedIndex = self.bound_value(hash_value,self.max_size)
+
+        # print(key)
+        # print(hash_value)
+        # print(hashedIndex)
+        # print("key \n")
+
+        return hashedIndex
 
 
 
     def dump_data(self):
         log("TABLE A: "+str(self.tableA))
         log("TABLE B: "+str(self.tableB))
+
+
+    
 
