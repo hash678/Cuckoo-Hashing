@@ -25,13 +25,23 @@
 {% block body %}
 
 <div class="center">
-    <h5>All Employees</h5>
-
-    {% for employee in employees %} 
-        {{employee.FirstName}}
-        <br>
-    {% endfor %}
-
+    <h2>All Employees</h2>
+    
+    <div id="all-posts"> 
+        {% for employee in employees %} 
+        
+        <div >
+            <div class="gradient-border">
+                Employee ID: {{employee.ID}} 
+                <br>            
+                First Name: {{employee.FirstName}} 
+                <br>
+                Last Name: {{employee.LastName}}
+            </div>
+        </div>
+        <br> <br>         
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

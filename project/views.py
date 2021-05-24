@@ -32,11 +32,10 @@ with open('records.csv', newline='') as f:
 cols = data[0]
 del data[0]
 
-
 for entry in data:
     id = entry[0]
     employee_data = {}
-    for i in range(1, len(cols) ):
+    for i in range(0, len(cols) ):
         employee_data[cols[i]] = entry[i]
     employees[id] = employee_data
 
