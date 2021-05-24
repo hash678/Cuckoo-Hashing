@@ -63,8 +63,6 @@ def test_data_insert():
 def test_data_insert_large():
     assert data_insert(100000)
 
-
-
 def test_random_inserts():
     assert random_inserts(100)
 

@@ -2,7 +2,7 @@ from cuckoo import *
 from chain import *
 
 employees1 = Cuckoo()
-employees2 = Chain()
+employees2 = dict()
 
 import csv
 with open('records.csv', newline='') as f:
@@ -34,11 +34,13 @@ for id in employees1.keys():
     lst1.append(employees1[id]['ID'])
 
 #chain
-for employee in employees2:
-    lst2.append(employee[1]['ID'])
+for id in employees2.keys():
+    lst2.append(employees2[id]['ID'])
 
 
-lst = sorted(lst)    #original ids
-lst1 = sorted(lst1)  #cuckoo hashed
-lst2 = sorted(lst2)  #chain hashed
+# lst = sorted(lst)    #original ids
+lst1 = sorted(employees1.keys())  #cuckoo hashed
+lst2 = sorted(employees2.keys())  #chain hashed
 
+print(lst1==lst2)
+#print(lst2)
