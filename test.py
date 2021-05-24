@@ -55,6 +55,65 @@ def random_inserts(size):
 
     return True
 
+from cuckoo import *
+from chain import *
+import csv
+
+def checkCuckoo():
+    employees1 = dict()
+    employees2 = Chain()
+    employees3 = Cuckoo()
+
+    with open('records.csv', newline='') as f:
+        reader = csv.reader(f)
+        data = list(reader)
+
+    cols = data[0]
+    del data[0]
+
+    lst = []
+
+    for entry in data:
+
+        id = entry[0]
+        employee_data = {}
+        for i in range(0, len(cols) ):
+            employee_data[cols[i]] = entry[i]
+
+        employees1[id] = employee_data
+        employees2[id] = employee_data
+        employees3[id] = employee_data
+        lst.append(id)
+
+
+    lst1 = [] #dict
+    lst2 = [] #chain
+    lst3 = [] #cuckoo
+
+    for id in employees1.keys():
+        lst1.append(employees1[id]['ID'])
+
+    for id in employees2.keys():
+        lst2.append(employees2[id]['ID'])
+
+    for id in employees2.keys():
+        lst3.append(employees2[id]['ID'])
+
+    lst = sorted(lst)                 
+    lst1 = sorted(employees1.keys())  
+    lst2 = sorted(employees2.keys())  
+    lst3 = sorted(employees2.keys()) 
+
+    return (lst1 == lst2 == lst3)
+
+
+
+
+
+
+
+
+
 
 def test_data_insert():
     assert data_insert(1000)
@@ -69,6 +128,8 @@ def test_random_inserts():
 def test_random_inserts_large():
     assert random_inserts(100000)
 
+# def test_check_Cuckoo():
+#     assert checkCuckoo()
 
 
 #Daredevil tests - If you decide to go on a self destructive quest to prove that my code doesn't work
