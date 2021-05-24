@@ -5,7 +5,7 @@ from helper import *
 import os
 import sys
 hashseed = os.getenv('PYTHONHASHSEED')
-if not hashseed:
+if not hashseed or hashseed is None:
     os.environ['PYTHONHASHSEED'] = '0'
     os.execv(sys.executable, [sys.executable] + sys.argv)
 
@@ -174,7 +174,7 @@ class Cuckoo:
 
 
     #get index 
-    def get_item_index(self,key) -> (int,Table):
+    def get_item_index(self,key) -> tuple:
         index_a = self.hash(key,Table.Table_A) 
         index_b = self.hash(key,Table.Table_B) 
 
