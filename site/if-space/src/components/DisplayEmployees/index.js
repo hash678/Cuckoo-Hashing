@@ -12,7 +12,6 @@ export default function DisplayEmployees({ onDelete, employees }) {
             <td className="font-bold">ID</td>
             <td className="font-bold">Name</td>
             <td className="font-bold">Email</td>
-            <td className="font-bold">Gender</td>
 
             <td className="font-bold">Salary</td>
             <td className="font-bold">Actions</td>
@@ -33,7 +32,6 @@ export default function DisplayEmployees({ onDelete, employees }) {
                   </td>
 
                   <td>{employee?.EMail}</td>
-                  <td>{employee?.Gender === "F" ? "Female" : "Male"}</td>
                   <td>{employee?.Salary}</td>
                   <td>
                     <div className="flex flex-row justify-center items-center  ">

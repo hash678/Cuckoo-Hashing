@@ -15,6 +15,23 @@ export default class DB {
       method: "DELETE",
     });
   }
+
+  static async insertEmployee(data) {
+    var formdata = new FormData();
+
+    for (const [key, value] of Object.entries(data)) {
+      formdata.append(key, value);
+    }
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    return fetch(BASE_URL + "/employees/" + data?.ID, requestOptions);
+  }
+
   static async batchUploadEmployees(file) {
     console.log("BATCH UPLOADING");
 
