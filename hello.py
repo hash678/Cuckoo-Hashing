@@ -32,9 +32,10 @@ def delete_employee(key):
 
 
 def delete_employees_all():
-    keys = [table_cuckoo[key] for key in table_cuckoo.keys()]
+    keys = [key for key in table_cuckoo.keys()]
     for key in keys:
         delete_employee(key)
+
 #Insert data into cuckoo or chaining table
 def insert_data(key,data):
     if mode == 1:
