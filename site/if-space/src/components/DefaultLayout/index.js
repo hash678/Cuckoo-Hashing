@@ -3,12 +3,10 @@ import Footer from "../Footer";
 
 export default function DefaultLayout(props) {
   return (
-    <div className="h-screen flex flex-col">
+    <div className=" flex flex-col">
       <NavigationBar />
-      <div className="mb-auto px-16 py-8">
-      {props.children}
-      </div>
-      <Footer/>
+      <div className="min-vh-100 mb-auto px-16 py-8">{props.children}</div>
+      <Footer />
     </div>
   );
 }

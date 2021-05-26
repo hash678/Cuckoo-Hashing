@@ -6,6 +6,11 @@ import { Button } from "react-bootstrap";
 import AddNewEmployee from "../src/components/AddNewEmployee";
 import { useEffect, useState } from "react";
 import DB from "../src/services/db";
+import { Person, Search } from "react-bootstrap-icons";
+import { Cloud } from "react-bootstrap-icons";
+import { Trash } from "react-bootstrap-icons";
+import { Eye } from "react-bootstrap-icons";
+import SearchModal from "../src/components/Search";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
@@ -13,8 +18,9 @@ export default function Home() {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    DB.loadEmployees("123")
+    DB.loadEmployees()
       .then((data) => {
+        console.log(data);
         setEmployees(data);
       })
       .catch((error) => {
@@ -31,55 +37,89 @@ export default function Home() {
       </Head>
 
       <br />
-      <div className="flex flex-wrap">
-        <p className="text-black font-light">
-          Welcome Jamal. <br />
-          <p className="font-bold text-lg">What would you like to do today?</p>
-        </p>
-        <Button
-          onClick={() => {
-            setIsShowAddNewEmployee(true);
-          }}
-          className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto"
-        >
-          Add employee
-        </Button>
-      </div>
+      <div className="h-screen overflow-hidden">
+        <div className="flex flex-wrap ">
+          <p className="text-black font-light">
+            Welcome Jamal. <br />
+            <p className="font-bold text-lg">
+              What would you like to do today?
+            </p>
+          </p>
 
-      <br />
+          <div className="flex flex-col mb-8 ml-auto items-start">
+            <Button
+              onClick={() => {
+                setIsShowAddNewEmployee(true);
+              }}
+              className="flex flex-row justify-center items-center focus:outline-none px-4 py-2 rounded-md text-pink-500"
+            >
+              {" "}
+              <Person />
+              &nbsp; Add Employee
+            </Button>
+            <Button
+              onClick={() => {
+                setIsShowAddNewEmployee(true);
+              }}
+              className="flex flex-row justify-center items-center focus:outline-none px-4 py-2 rounded-md text-pink-500 "
+            >
+              <Cloud />
+              &nbsp; Batch Upload
+            </Button>
+          </div>
+        </div>
 
-      <table className="table-auto w-full">
-        <thead>
-          <tr className="bg-black text-white px-4 text-center">
-            <td className="font-bold">ID</td>
-            <td className="font-bold">Name</td>
-            <td className="font-bold">Email</td>
-            <td className="font-bold">Salary</td>
+        <br />
 
-            <td className="font-bold">Department</td>
-          </tr>
-        </thead>
-        <tbody>
-          {employees?.map((employee) => {
-            return (
-              <tr className="text-center">
-                <td>employee?.id</td>
-                <td>employee?.name</td>
-                <td>employee?.email</td>
-                <td>employee?.department</td>
-                <td>employee?.salary</td>
+        <div className="overscroll-auto">
+          <table className="table-auto w-full">
+            <thead>
+              <tr className="bg-black text-white px-4 text-center">
+                <td className="font-bold">ID</td>
+                <td className="font-bold">Name</td>
+                <td className="font-bold">Email</td>
+                <td className="font-bold">Gender</td>
+
+                <td className="font-bold">Salary</td>
+                <td className="font-bold">Actions</td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {employees?.map((employee) => {
+                return (
+                  <>
+                    &nbsp;
+                    <tr className="text-center">
+                      <td>{employee?.ID}</td>
+                      <td>
+                        {employee?.FirstName} {employee?.LastName}
+                      </td>
 
-      <AddNewEmployee
-        isShow={isShowAddNewEmployee}
-        onClose={() => {
-          setIsShowAddNewEmployee(false);
-        }}
-      />
+                      <td>{employee?.EMail}</td>
+                      <td>{employee?.Gender === "F" ? "Female" : "Male"}</td>
+                      <td>{employee?.Salary}</td>
+                      <td>
+                        <div className="flex flex-row justify-center items-center  ">
+                          <Trash className="cursor-pointer text-xl text-red-500" />
+                          &nbsp; &nbsp; &nbsp; &nbsp;
+                          <Eye className="cursor-pointer text-xl " />
+                        </div>
+                      </td>
+                    </tr>
+                  </>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <AddNewEmployee
+          isShow={isShowAddNewEmployee}
+          onClose={() => {
+            setIsShowAddNewEmployee(false);
+          }}
+        />
+      </div>
     </DefaultLayout>
   );
 }

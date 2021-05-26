@@ -2,6 +2,8 @@
 from flask import Flask, json
 from flask import jsonify
 from flask import request
+import csv
+import io
 
 from flask_cors import CORS, cross_origin
 app = Flask(__name__)
@@ -40,6 +42,13 @@ def get_data(key):
     return table_chain[key]
 
 
+def get_all_data(max_value):
+    keys =  table_cuckoo.keys()
+    if max_value !=None:
+        keys[:min(len(keys),max_value)]
+
+    return [table_cuckoo[key] for key in keys]
+
 
 @app.route('/set')
 def set_mode():
@@ -55,15 +64,52 @@ def employees(user_id):
     if request.method == 'POST':
         """modify/update the information for <user_id>"""
         data = request.form # a multidict containing POST data
-        insert_data(user_id,data)
+        
+        userData = data.to_dict()
+        userData['id'] = user_id
+        insert_data(user_id,userData)
         return "<h1>"+user_id+"</h1>"
 
     if request.method == "GET":
         if user_id == "all":
-            return []
-
+            return jsonify(get_all_data())
 
         return jsonify(get_data(user_id))
+
+
+@app.route('/employees-all/', methods = [ 'GET', 'POST'])
+@cross_origin()
+def employees_all():
+    if request.method == "GET":
+        return jsonify(get_all_data(None))
+
+
+
+@app.route('/employees-batch/', methods = [ 'GET', 'POST'])
+@cross_origin()
+def employees_batch():
+    f = request.files['data_file']
+    if not f:
+        return "No file"
+
+    stream = io.StringIO(f.stream.read().decode("UTF8"), newline=None)
+    reader = csv.reader(stream)
+    data = list(reader)
+
+        
+    cols = data[0] # column names of the csv file 
+    del data[0] # delete column row
+
+    for entry in data:    
+        id = entry[0]
+        some_data = {}
+        for i in range(0, len(cols) ):
+            some_data[cols[i]] = entry[i]
+        insert_data(id,some_data)
+
+    return "Insert Complete"
+
+
 
 
 @app.route('/')
