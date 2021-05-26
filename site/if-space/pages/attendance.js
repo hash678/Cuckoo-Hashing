@@ -5,10 +5,11 @@ import DefaultLayout from "../src/components/DefaultLayout";
 import {Button} from "react-bootstrap";
 import AddNewEmployee from "../src/components/AddNewEmployee";
 import {useState} from "react";
+import PopupDialog from "../src/components/PopupDialog";
 
 export default function Attendance() {
 
-    const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false)
+    const [isShowPopupDialog, setIsShowPopupDialog] = useState(false);
 
     const attendanceData = [
         {
@@ -44,10 +45,10 @@ export default function Attendance() {
 
             <br/>
             <div className="flex flex-wrap">
-                <p className="text-black font-light">Welcome Jamal. <br/>
-                    <p className="font-bold text-lg">What would you like to do today?</p>
+                <p className="text-black font-light">Hello Jamal. <br/>
+                    <p className="font-bold text-lg">Welcome to your attendance portal.</p>
                 </p>
-                <Button onClick={() => {setIsShowAddNewEmployee(true)}} className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto">Add employee</Button>
+                {/*<Button onClick={() => {setIsShowPopupDialog(true)}} className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto">Add employee</Button>*/}
 
             </div>
 
@@ -71,8 +72,17 @@ export default function Attendance() {
                             <td>{val?.timeIn ?? `No Entry Time`}</td>
                             <td>{val?.timeOut ?? `No Exit Time`}</td>
                             <td>
-                                <Button className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white" style={{ marginBottom: "0" }}>Mark Attendance</Button>
-                                <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">I'm Leaving the Office</Button>
+                                <Button
+                                    className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white"
+                                    style={{ marginBottom: "0" }}
+                                    onClick={() => { setIsShowPopupDialog(true) }}
+                                >
+                                    Mark Attendance
+                                </Button>
+
+                                <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">
+                                    I'm Leaving the Office
+                                </Button>
                             </td>
                         </tr>
                     )
@@ -81,7 +91,7 @@ export default function Attendance() {
                 </tbody>
             </table>
 
-            <AddNewEmployee isShow={isShowAddNewEmployee} onClose={() => {setIsShowAddNewEmployee(false)}}/>
+            <PopupDialog isShow={isShowPopupDialog} onClose={() => {setIsShowPopupDialog(false)}}/>
 
 
         </DefaultLayout>
