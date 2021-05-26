@@ -1,50 +1,66 @@
-from flask import Flask, request, jsonify
+
+from flask import Flask
+from flask import jsonify
+from flask import request
+
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.route('/getmsg/', methods=['GET'])
-def respond():
-    # Retrieve the name from url parameter
-    name = request.args.get("name", None)
+import sys
+sys.path.insert(1, './cuckoo')
 
-    # For debugging
-    print(f"got name {name}")
+app.run(debug=True)
 
-    response = {}
+# import hash tables
+from cuckoo import *
+from chain import *
 
-    # Check if user sent a name at all
-    if not name:
-        response["ERROR"] = "no name found, please send a name."
-    # Check if the user entered a number not a name
-    elif str(name).isdigit():
-        response["ERROR"] = "name can't be numeric."
-    # Now the user entered a valid name
-    else:
-        response["MESSAGE"] = f"Welcome {name} to our awesome platform!!"
 
-    # Return the response in json format
-    return jsonify(response)
+mode = 1
 
-@app.route('/post/', methods=['POST'])
-def post_something():
-    param = request.form.get('name')
-    print(param)
-    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
-    if param:
-        return jsonify({
-            "Message": f"Welcome {name} to our awesome platform!!",
-            # Add this option to distinct the POST request
-            "METHOD" : "POST"
-        })
-    else:
-        return jsonify({
-            "ERROR": "no name found, please send a name."
-        })
+table_cuckoo = Cuckoo()
+table_chain = Chain()
 
-# A welcome message to test our server
+
+
+#Insert data into cuckoo or chaining table
+def insert_data(key,data):
+    if mode == 1:
+        table_cuckoo[key] = data
+        return
+    
+    table_chain[key] = data
+
+#Get data from cuckoo and chaining 
+def get_data(key):
+    if mode == 1:
+        return table_cuckoo[key]
+    return table_chain[key]
+
+
+@app.route('/set')
+def set_mode():
+    global mode
+    mode_value = request.args.get('mode')
+    mode = int(mode_value)
+    return 'Table Change to: ' + ('Cuckoo' if mode == 1 else 'Chaining')
+
 @app.route('/')
-def index():
-    return "<h1>Welcome to our server !!</h1>"
+
+def hello_world():
+
+    id = request.args.get('id')
+    return jsonify(get_data(id))
+
+@app.route('/insert')
+def data():
+    # here we want to get the value of user (i.e. ?user=some-value)
+    id = request.args.get('id')
+    user = request.args.get('user')
+    insert_data(id,user)
+    return "Successful"
+
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    app.run(host='0.0.0.0', debug = False)
