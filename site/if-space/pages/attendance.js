@@ -57,10 +57,10 @@ export default function Attendance() {
             <table className="table-auto w-full">
                 <thead>
                 <tr className="bg-black text-white px-4 text-center">
-                    <td className="font-bold">Date</td>
-                    <td className="font-bold">Time In</td>
-                    <td className="font-bold">Time Out</td>
-                    <td className="font-bold">Actions</td>
+                    <td className="font-bold ">Date</td>
+                    <td className="font-bold ">Time In</td>
+                    <td className="font-bold ">Time Out</td>
+                    <td className="font-bold w-1/3">Actions</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -71,8 +71,8 @@ export default function Attendance() {
                             <td>{val?.timeIn ?? `No Entry Time`}</td>
                             <td>{val?.timeOut ?? `No Exit Time`}</td>
                             <td>
-                                <Button className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white mb-0">Mark Attendance</Button>
-                                <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">Mark Exit</Button>
+                                <Button className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white" style={{ marginBottom: "0" }}>Mark Attendance</Button>
+                                <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">I'm Leaving the Office</Button>
                             </td>
                         </tr>
                     )
