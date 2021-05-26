@@ -11,6 +11,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
 
     const onSubmit = (values) => {
         console.log(values)
+        onClose();
     }
 
     return (
@@ -53,7 +54,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                                     required
                                                     placeholder="Date"
                                                     {...field}
-                                                    isInvalid={!!errors.name}
+                                                    isInvalid={!!errors.date}
                                                 />
                                             )}
                                             name="date"
@@ -68,10 +69,8 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                         render={({ field }) => (
                                             <Form.Control
                                                 className="w-full focus:outline-none border h-12 px-4 mb-4 w-full"
-                                                required
                                                 placeholder="Notes"
                                                 {...field}
-                                                isInvalid={!!errors.name}
                                             />
                                         )}
                                         name="notes"

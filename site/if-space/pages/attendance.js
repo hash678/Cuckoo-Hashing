@@ -49,16 +49,27 @@ export default function Attendance() {
                 <p className="text-black font-light">Hello Jamal. <br/>
                     <p className="font-bold text-lg">Welcome to your attendance portal.</p>
                 </p>
-                <Button
-                    onClick={() => {
-                        setIsBatch(true);
-                        setIsShowPopupDialog(true);
-                    }}
-                    className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white ml-auto"
-                >
-                    Batch Upload Attendance
-                </Button>
-
+                <div className="ml-auto">
+                    <Button
+                        className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white mr-2"
+                        style={{ marginBottom: "0" }}
+                        onClick={() => {
+                            setIsBatch(false);
+                            setIsShowPopupDialog(true) ;
+                        }}
+                    >
+                        Add Record
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setIsBatch(true);
+                            setIsShowPopupDialog(true);
+                        }}
+                        className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white ml-2"
+                    >
+                        Batch Upload Attendance
+                    </Button>
+                </div>
             </div>
 
             <br/>
@@ -81,17 +92,6 @@ export default function Attendance() {
                             <td>{val?.timeIn ?? `No Entry Time`}</td>
                             <td>{val?.timeOut ?? `No Exit Time`}</td>
                             <td>
-                                <Button
-                                    className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white"
-                                    style={{ marginBottom: "0" }}
-                                    onClick={() => {
-                                        setIsBatch(false);
-                                        setIsShowPopupDialog(true) ;
-                                    }}
-                                >
-                                    Add Record
-                                </Button>
-
                                 <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">
                                     Delete Record
                                 </Button>
