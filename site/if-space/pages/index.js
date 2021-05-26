@@ -2,8 +2,14 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import DefaultLayout from "../src/components/DefaultLayout";
+import {Button} from "react-bootstrap";
+import AddNewEmployee from "../src/components/AddNewEmployee";
+import {useState} from "react";
 
 export default function Home() {
+
+    const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false)
+
   return (
     <DefaultLayout >
       <Head>
@@ -12,8 +18,43 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-        <h1 >sss</h1>
+        <br/>
+        <div className="flex flex-wrap">
+            <p className="text-black font-light">Welcome Jamal. <br/>
+            <p className="font-bold text-lg">What would you like to do today?</p>
+            </p>
+            <Button onClick={() => {setIsShowAddNewEmployee(true)}} className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto">Add employee</Button>
 
+        </div>
+
+        <br/>
+
+
+        <table className="table-auto w-full">
+            <thead>
+            <tr className="bg-black text-white px-4">
+                <td className="font-bold">ID</td>
+                <td className="font-bold">Name</td>
+                <td className="font-bold">Email</td>
+                <td className="font-bold">Salary</td>
+
+                <td className="font-bold">Department</td>
+            </tr>
+            </thead>
+           <tbody>
+           <tr>
+
+               <td>ID</td>
+               <td>Name</td>
+               <td>Email</td>
+               <td>Department</td>
+               <td>Salary</td>
+           </tr>
+           </tbody>
+
+        </table>
+
+        <AddNewEmployee isShow={isShowAddNewEmployee} onClose={() => {setIsShowAddNewEmployee(false)}}/>
 
 
     </DefaultLayout>
