@@ -15,11 +15,11 @@ import CSVUpload from "../src/components/CSVUpload";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
-  const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
   const [isBatch, setIsBatch] = useState(false);
 
-  const [employees, setEmployees] = useState([]);
+  const [toDeleteEmployee, setToDeleteEmployee] = useState(false);
 
+  const [employees, setEmployees] = useState([]);
   const [showBatchUpload, setShowBatchUpload] = useState(false);
 
   useEffect(() => {
@@ -37,15 +37,11 @@ export default function Home() {
       });
   };
 
-  const deleteEmployee = () => {
-    DB.employeeDelete(toDeleteEmployee?.ID)
-      .then(() => {
-        setToDeleteEmployee(null);
-        loadEmployees();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  const deleteAllEmployee = () => {
+    DB.employeeDeleteAll().then(() => {
+      loadEmployees();
+      setToDeleteEmployee(false);
+    });
   };
 
   return (
@@ -81,49 +77,55 @@ export default function Home() {
             <Button
               onClick={() => {
                 setShowBatchUpload(true);
-                setIsShowAddNewEmployee(true);
               }}
               className="flex flex-row justify-center items-center focus:outline-none px-2 py-2 rounded-md text-pink-500"
             >
               <Cloud />
               &nbsp; Batch Upload
             </Button>
+            &nbsp; &nbsp; &nbsp; &nbsp;
+            <Button
+              onClick={() => {
+                setToDeleteEmployee(true);
+              }}
+              className="flex flex-row justify-center items-center focus:outline-none px-2 py-2 rounded-md text-red-500"
+            >
+              {" "}
+              <Trash />
+              &nbsp; Delete All
+            </Button>
           </div>
         </div>
 
         <br />
 
-        <DisplayEmployees
-          onDelete={(employee) => {
-            setToDeleteEmployee(employee);
-          }}
-          employees={employees}
-        />
-
         <ConfirmDialog
-          isShow={toDeleteEmployee != null}
+          isShow={toDeleteEmployee}
           onClose={() => {
-            setToDeleteEmployee(null);
+            setToDeleteEmployee(false);
           }}
           onYes={() => {
-            deleteEmployee();
+            deleteAllEmployee();
           }}
           title={
             <strong className="flex flex-row items-center justify-center">
               <Trash />
-              &nbsp; Delete Employee
+              &nbsp; Delete ALL Employees
             </strong>
           }
           text={
             <p>
-              Are you sure you want to delete{" "}
-              <strong>
-                {toDeleteEmployee?.FirstName} {toDeleteEmployee?.LastName}
-              </strong>
-              ? <br />
+              Are you sure you want to delete all employees ? <br />
               This cannot be undone
             </p>
           }
+        />
+
+        <DisplayEmployees
+          reloadData={() => {
+            loadEmployees();
+          }}
+          employees={employees}
         />
 
         <CSVUpload

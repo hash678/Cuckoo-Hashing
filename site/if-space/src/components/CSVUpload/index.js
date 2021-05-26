@@ -2,6 +2,7 @@ import { Button, Form, Modal } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
 import DB from "../../services/db";
+import { toast } from "react-toastify";
 
 export default function CSVUpload({ isShow, onClose, onUploaded }) {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -15,7 +16,7 @@ export default function CSVUpload({ isShow, onClose, onUploaded }) {
   const onSubmit = (values) => {
     console.log(selectedFile);
     DB.batchUploadEmployees(selectedFile)
-      .then(() => {
+      .then((response) => {
         onClose();
 
         onUploaded();

@@ -4,6 +4,7 @@ from flask import jsonify
 from flask import request
 import csv
 import io
+import time
 
 from flask_cors import CORS, cross_origin
 app = Flask(__name__)
@@ -85,25 +86,29 @@ def employees(user_id):
         
         userData = data.to_dict()
         userData['id'] = user_id
+        start_time = time.time()
         insert_data(user_id,userData)
-        return "<h1>"+user_id+"</h1>"
+        return jsonify({'timeTaken':(time.time()-start_time)})
 
     if request.method == "DELETE":
+        start_time = time.time()
         delete_employee(user_id)
         return "Delete successful"
 
     if request.method == "GET":
-        if user_id == "all":
-            return jsonify(get_all_data())
+        start_time = time.time()
+        gotData = get_all_data(user_id)
+        jsonify({'timeTaken':(time.time()-start_time),'data':gotData})
 
-        return jsonify(get_data(user_id))
 
 
 @app.route('/employees-all/', methods = [ 'GET', 'POST'])
 @cross_origin()
 def employees_all():
     if request.method == "GET":
-        return jsonify(get_all_data(None))
+        start_time = time.time()
+        gotData = get_all_data(None)
+        return jsonify({'timeTaken':(time.time()-start_time),'data':gotData})
 
 
 
@@ -111,11 +116,16 @@ def employees_all():
 @cross_origin()
 def employees_batch():
 
+    #Batch Delete Data
     if request.method == "DELETE":
+        start_time = time.time()
         delete_employees_all()
-        return 'Deleted All'
+        
+        return jsonify({'timeTaken':(time.time()-start_time)})
 
 
+    #Insert Data in Batch
+    start_time = time.time()
     f = request.files['data_file']
     if not f:
         return "No file"
@@ -136,7 +146,7 @@ def employees_batch():
             some_data[cols[i]] = entry[i]
         insert_data(id,some_data)
 
-    return "Insert Complete"
+    return jsonify({'timeTaken':(time.time()-start_time)})
 
 
 

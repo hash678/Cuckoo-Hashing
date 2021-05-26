@@ -1,19 +1,43 @@
 import { Fetch } from "react-request";
 import { BASE_URL } from "../constants";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 export default class DB {
-  static async insertEmployee(data) {}
-
   static async loadEmployees() {
     let jsonData = await fetch(BASE_URL + "/employees-all/").then((res) =>
       res.json()
     );
-    return jsonData;
+    toast(`${jsonData?.timeTaken?.toFixed(2)}s to taken fetch employees`);
+
+    return jsonData?.data;
   }
+
+  static async findEmployee(id) {
+    let jsonData = await fetch(BASE_URL + "/employees/" + id).then((res) =>
+      res.json()
+    );
+
+    toast(`${jsonData?.timeTaken?.toFixed(2)}s to taken to find employee`);
+
+    return jsonData?.data;
+  }
+
   static async employeeDelete(id) {
     let jsonData = await fetch(BASE_URL + "/employees/" + id, {
       method: "DELETE",
     });
+    return jsonData?.timeTaken;
+  }
+
+  static async employeeDeleteAll() {
+    let jsonData = await fetch(BASE_URL + "/employees-batch/", {
+      method: "DELETE",
+    });
+    toast(`${jsonData?.timeTaken?.toFixed(2)}s taken in operation`);
+
+    return jsonData?.timeTaken;
   }
 
   static async insertEmployee(data) {
@@ -29,7 +53,11 @@ export default class DB {
       redirect: "follow",
     };
 
-    return fetch(BASE_URL + "/employees/" + data?.ID, requestOptions);
+    let response = await fetch(
+      BASE_URL + "/employees/" + data?.ID,
+      requestOptions
+    ).then((res) => res.json());
+    return response?.timeTaken;
   }
 
   static async batchUploadEmployees(file) {
@@ -44,6 +72,12 @@ export default class DB {
       redirect: "follow",
     };
 
-    return fetch(BASE_URL + "/employees-batch/", requestOptions);
+    let response = await fetch(
+      BASE_URL + "/employees-batch/",
+      requestOptions
+    ).then((res) => res.json());
+
+    toast(`${response?.timeTaken?.toFixed(2)}s taken in operation`);
+    return response?.timeTaken?.toFixed(2);
   }
 }

@@ -6,6 +6,7 @@ export default function AddNewEmployee({ isShow, onClose, batch, onSuccess }) {
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitted },
   } = useForm();
 
@@ -14,6 +15,7 @@ export default function AddNewEmployee({ isShow, onClose, batch, onSuccess }) {
     DB.insertEmployee(values).then(() => {
       onClose();
       onSuccess();
+      reset();
     });
   };
 

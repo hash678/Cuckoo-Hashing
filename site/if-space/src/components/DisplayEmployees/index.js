@@ -1,6 +1,22 @@
 import { Eye, Trash } from "react-bootstrap-icons";
+import { useState } from "react";
+import ConfirmDialog from "../ConfirmDialog";
+import DB from "../../services/db";
 
-export default function DisplayEmployees({ onDelete, employees }) {
+export default function DisplayEmployees({ employees, reloadData }) {
+  const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
+
+  const deleteEmployee = () => {
+    DB.employeeDelete(toDeleteEmployee?.ID)
+      .then(() => {
+        setToDeleteEmployee(null);
+        reloadData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div
       className=" overscroll-auto overflow-auto"
@@ -37,7 +53,7 @@ export default function DisplayEmployees({ onDelete, employees }) {
                     <div className="flex flex-row justify-center items-center  ">
                       <Trash
                         onClick={() => {
-                          onDelete(employee);
+                          setToDeleteEmployee(employee);
                         }}
                         className="cursor-pointer text-xl text-red-500"
                       />
@@ -51,6 +67,32 @@ export default function DisplayEmployees({ onDelete, employees }) {
           })}
         </tbody>
       </table>
+
+      <ConfirmDialog
+        isShow={toDeleteEmployee != null}
+        onClose={() => {
+          setToDeleteEmployee(null);
+        }}
+        onYes={() => {
+          deleteEmployee();
+        }}
+        title={
+          <strong className="flex flex-row items-center justify-center">
+            <Trash />
+            &nbsp; Delete Employee
+          </strong>
+        }
+        text={
+          <p>
+            Are you sure you want to delete{" "}
+            <strong>
+              {toDeleteEmployee?.FirstName} {toDeleteEmployee?.LastName}
+            </strong>
+            ? <br />
+            This cannot be undone
+          </p>
+        }
+      />
     </div>
   );
 }
