@@ -21,13 +21,11 @@ export default function NavigationBar() {
   ];
 
   return (
-    <div className="bg-white h-16 w-full top-0 flex-row px-16 items-center">
+    <div className="bg-white h-16 w-full top-0 flex flex-row px-16 justify-center items-center">
       {navigation.map((item) => {
         return (
           <Link href={item.url}>
-            <div className="cursor-pointer text-black font-bold text-lg uppercase ">
-              {item.title}
-            </div>
+            <h1 className="text-black font-bold text-lg uppercase mx-2">{item.title}</h1>
           </Link>
         );
       })}
