@@ -16,7 +16,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
 
     return (
             <Modal id="fullScreenModalId" show={isShow} onHide={onClose} dialogClassName="fullscreen-modal" >
-                <div className="bg-white w-1/3 p-8">
+                <div className="bg-white w-1/2 p-8">
                     <div className="mb-5">
                         <div className="flex flex-row w-full">
                             <h1 className="font-bold text-2xl">{`Add Attendance Record${batch && 's'}`}</h1>

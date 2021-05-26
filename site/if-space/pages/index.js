@@ -5,10 +5,41 @@ import DefaultLayout from "../src/components/DefaultLayout";
 import {Button} from "react-bootstrap";
 import AddNewEmployee from "../src/components/AddNewEmployee";
 import {useState} from "react";
+import AddAttendanceRecord from "../src/components/AddAttendanceRecord";
 
 export default function Home() {
 
-    const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false)
+    const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
+    const [isBatch, setIsBatch] = useState(false);
+
+    const employeeData = [
+        {
+            id: 123,
+            name: "Abdullah Bashir bin Rashid",
+            email: "abdullahbashirbinrashid@gmail.com",
+            salary: "PKR 27,000"
+        },{
+            id: 124,
+            name: "Abdullah Bashir bin Rashid",
+            email: "abdullahbashirbinrashid@gmail.com",
+            salary: "PKR 27,000"
+        },{
+            id: 125,
+            name: "Abdullah Bashir bin Rashid",
+            email: "abdullahbashirbinrashid@gmail.com",
+            salary: "PKR 27,000"
+        },{
+            id: 126,
+            name: "Abdullah Bashir bin Rashid",
+            email: "abdullahbashirbinrashid@gmail.com",
+            salary: "PKR 27,000"
+        },{
+            id: 127,
+            name: "Abdullah Bashir bin Rashid",
+            email: "abdullahbashirbinrashid@gmail.com",
+            salary: "PKR 27,000"
+        },
+    ];
 
   return (
     <DefaultLayout >
@@ -19,42 +50,67 @@ export default function Home() {
       </Head>
 
         <br/>
-        <div className="flex flex-wrap">
-            <p className="text-black font-light">Welcome Jamal. <br/>
-            <p className="font-bold text-lg">What would you like to do today?</p>
-            </p>
-            <Button onClick={() => {setIsShowAddNewEmployee(true)}} className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto">Add employee</Button>
+        <main>
+            <div className="flex flex-wrap">
+                <p className="text-black font-light">Hello Jamal. <br/>
+                    <p className="font-bold text-lg">Welcome to your attendance portal.</p>
+                </p>
+                <div className="ml-auto">
+                    <Button
+                        className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white mr-2"
+                        style={{ marginBottom: "0" }}
+                        onClick={() => {
+                            setIsBatch(false);
+                            setIsShowAddNewEmployee(true) ;
+                        }}
+                    >
+                        Add Employee
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setIsBatch(true);
+                            setIsShowAddNewEmployee(true);
+                        }}
+                        className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white ml-2"
+                    >
+                        Batch Upload Employees
+                    </Button>
+                </div>
+            </div>
 
-        </div>
-
-        <br/>
-
-
-        <table className="table-auto w-full">
-            <thead>
-            <tr className="bg-black text-white px-4 text-center">
-                <td className="font-bold">ID</td>
-                <td className="font-bold">Name</td>
-                <td className="font-bold">Email</td>
-                <td className="font-bold">Salary</td>
-
-                <td className="font-bold">Department</td>
-            </tr>
-            </thead>
-           <tbody>
-           <tr className="text-center">
-               <td>ID</td>
-               <td>Name</td>
-               <td>Email</td>
-               <td>Department</td>
-               <td>Salary</td>
-           </tr>
-           </tbody>
-        </table>
-
-        <AddNewEmployee isShow={isShowAddNewEmployee} onClose={() => {setIsShowAddNewEmployee(false)}}/>
+            <br/>
 
 
+            <table className="table-auto w-full">
+                <thead>
+                <tr className="bg-black text-white px-4 text-center">
+                    <td className="font-bold">ID</td>
+                    <td className="font-bold">Name of Employee</td>
+                    <td className="font-bold w-1/3">Email</td>
+                    <td className="font-bold w-1/4">Salary</td>
+                </tr>
+                </thead>
+                <tbody>
+                { employeeData.map( val => {
+                    return (
+                        <tr className="text-center h-16">
+                            <td>{val?.id ?? `NULL`}</td>
+                            <td>{val?.name ?? `No Name`}</td>
+                            <td>{val?.email ?? `No Email Found`}</td>
+                            <td>{val?.salary ?? `No Salary`}</td>
+                        </tr>
+                    )
+                } ) }
+
+                </tbody>
+            </table>
+
+            <AddNewEmployee
+                isShow={isShowAddNewEmployee}
+                onClose={() => {setIsShowAddNewEmployee(false)}}
+                batch={isBatch}
+            />
+        </main>
     </DefaultLayout>
   )
 }
