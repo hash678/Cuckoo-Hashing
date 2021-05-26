@@ -47,7 +47,6 @@ def set_mode():
     return 'Table Change to: ' + ('Cuckoo' if mode == 1 else 'Chaining')
 
 @app.route('/')
-@cross_origin()
 
 def hello_world():
 
