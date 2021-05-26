@@ -5,7 +5,7 @@ export default class DB {
   static async insertEmployee(data) {}
 
   static async loadEmployees() {
-    let jsonData = await fetch(BASE_URL + "/employees-batch/").then((res) =>
+    let jsonData = await fetch(BASE_URL + "/employees-all/").then((res) =>
       res.json()
     );
     return jsonData;
@@ -14,5 +14,19 @@ export default class DB {
     let jsonData = await fetch(BASE_URL + "/employees/" + id, {
       method: "DELETE",
     });
+  }
+  static async batchUploadEmployees(file) {
+    console.log("BATCH UPLOADING");
+
+    var formdata = new FormData();
+    formdata.append("data_file", file, "file");
+
+    var requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    return fetch(BASE_URL + "/employees-batch/", requestOptions);
   }
 }

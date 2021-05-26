@@ -1,7 +1,30 @@
 import { Button, Form, Modal } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
+import { useState } from "react";
+import DB from "../../services/db";
 
-export default function CSVUpload({ isShow, onClose, title, text, onYes }) {
+export default function CSVUpload({ isShow, onClose, onUploaded }) {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitted },
+  } = useForm();
+
+  const onSubmit = (values) => {
+    console.log(selectedFile);
+    DB.batchUploadEmployees(selectedFile)
+      .then(() => {
+        onClose();
+
+        onUploaded();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <Modal
       id="fullScreenModalId"
@@ -12,26 +35,31 @@ export default function CSVUpload({ isShow, onClose, title, text, onYes }) {
       <div className="bg-white w-1/3 p-8">
         <div className="mb-5">
           <div className="flex flex-row w-full">
-            <h1 className="font-bold text-2xl">{title}</h1>
+            <h1 className="font-bold text-2xl">Batch Upload Employees</h1>
           </div>
         </div>
 
         <div className="items-center">
-          <p>{text}</p>
-          <br />
-          <input type="file" />
-          <Button
-            onClick={onYes}
-            className="Button bg-pink-500 text-white p-2 m-2 w-16 rounded-md"
+          <Form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col justify-start items-start"
           >
-            Yes
-          </Button>
-          <Button
-            onClick={onClose}
-            className="Button bg-pink-500 text-white  p-2 m-2 w-16 rounded-md"
-          >
-            No
-          </Button>
+            <Form.Group className="w-full">
+              <input
+                type="file"
+                onChange={(e) => {
+                  setSelectedFile(e.target.files?.[0]);
+                }}
+              />
+            </Form.Group>
+
+            <Button
+              type="submit"
+              className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white self-end"
+            >
+              Add employee
+            </Button>
+          </Form>
         </div>
       </div>
     </Modal>

@@ -11,12 +11,15 @@ import { Cloud } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
 import DisplayEmployees from "../src/components/DisplayEmployees";
 import ConfirmDialog from "../src/components/ConfirmDialog";
+import CSVUpload from "../src/components/CSVUpload";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
   const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
 
   const [employees, setEmployees] = useState([]);
+
+  const [showBatchUpload, setShowBatchUpload] = useState(false);
 
   useEffect(() => {
     loadEmployees();
@@ -75,7 +78,7 @@ export default function Home() {
             </Button>
             <Button
               onClick={() => {
-                setIsShowAddNewEmployee(true);
+                setShowBatchUpload(true);
               }}
               className="flex flex-row justify-center items-center focus:outline-none px-4 py-2 rounded-md text-pink-500 "
             >
@@ -118,6 +121,16 @@ export default function Home() {
               This cannot be undone
             </p>
           }
+        />
+
+        <CSVUpload
+          isShow={showBatchUpload}
+          onClose={() => {
+            setShowBatchUpload(false);
+          }}
+          onUploaded={() => {
+            loadEmployees();
+          }}
         />
 
         <AddNewEmployee
