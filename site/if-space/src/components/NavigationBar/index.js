@@ -7,28 +7,32 @@ export default function NavigationBar() {
       url: "/home",
     },
     {
-      title: "Home",
+      title: "Attendance",
       url: "/home",
     },
     {
-      title: "Home",
+      title: "Inventory",
       url: "/home",
     },
     {
-      title: "Home",
+      title: "Analyze",
       url: "/home",
     },
   ];
 
   return (
-    <div className="bg-white h-16 w-full top-0 flex flex-row px-16 justify-center items-center">
+    <div className="shadow-md bg-white h-16 w-full top-0 flex flex-row px-16  items-center">
+      <h2 className="mr-16 font-bold text-lg">Indexed Functions</h2>
       {navigation.map((item) => {
         return (
           <Link href={item.url}>
-            <h1 className="text-black font-bold text-lg uppercase mx-2">{item.title}</h1>
+            <a className="text-black font-light text-lg mx-4">{item.title}</a>
           </Link>
         );
+
       })}
+      <h2 className="ml-auto font-bold text-lg">Login</h2>
+
     </div>
   );
 }
