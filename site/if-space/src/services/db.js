@@ -10,4 +10,9 @@ export default class DB {
     );
     return jsonData;
   }
+  static async employeeDelete(id) {
+    let jsonData = await fetch(BASE_URL + "/employees/" + id, {
+      method: "DELETE",
+    });
+  }
 }

@@ -26,6 +26,9 @@ table_cuckoo = Cuckoo()
 table_chain = Chain()
 
 
+def delete_employee(key):
+    print(table_cuckoo.pop(key))
+    table_chain.discard(key)
 
 #Insert data into cuckoo or chaining table
 def insert_data(key,data):
@@ -70,6 +73,10 @@ def employees(user_id):
         insert_data(user_id,userData)
         return "<h1>"+user_id+"</h1>"
 
+    if request.method == "DELETE":
+        delete_employee(user_id)
+        return "Delete successful"
+
     if request.method == "GET":
         if user_id == "all":
             return jsonify(get_all_data())
@@ -102,6 +109,7 @@ def employees_batch():
 
     for entry in data:    
         id = entry[0]
+        print(id)
         some_data = {}
         for i in range(0, len(cols) ):
             some_data[cols[i]] = entry[i]

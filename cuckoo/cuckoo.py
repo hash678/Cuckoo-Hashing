@@ -91,10 +91,12 @@ class Cuckoo:
 
         if self.tableA[index] != None and self.tableA[index][0] == key:
             self.tableA[index] = None
+            self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
             return True
         
         if self.tableB[index] != None and self.tableB[index][0] == key:
             self.tableB[index] = None
+            self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
             return True
 
 

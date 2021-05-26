@@ -9,15 +9,20 @@ import DB from "../src/services/db";
 import { Person, Search } from "react-bootstrap-icons";
 import { Cloud } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
-import { Eye } from "react-bootstrap-icons";
-import SearchModal from "../src/components/Search";
+import DisplayEmployees from "../src/components/DisplayEmployees";
+import ConfirmDialog from "../src/components/ConfirmDialog";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
+  const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
 
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
+    loadEmployees();
+  }, []);
+
+  const loadEmployees = () => {
     DB.loadEmployees()
       .then((data) => {
         console.log(data);
@@ -26,7 +31,18 @@ export default function Home() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  };
+
+  const deleteEmployee = () => {
+    DB.employeeDelete(toDeleteEmployee?.ID)
+      .then(() => {
+        setToDeleteEmployee(null);
+        loadEmployees();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <DefaultLayout>
@@ -71,47 +87,38 @@ export default function Home() {
 
         <br />
 
-        <div className="overscroll-auto">
-          <table className="table-auto w-full">
-            <thead>
-              <tr className="bg-black text-white px-4 text-center">
-                <td className="font-bold">ID</td>
-                <td className="font-bold">Name</td>
-                <td className="font-bold">Email</td>
-                <td className="font-bold">Gender</td>
+        <DisplayEmployees
+          onDelete={(employee) => {
+            setToDeleteEmployee(employee);
+          }}
+          employees={employees}
+        />
 
-                <td className="font-bold">Salary</td>
-                <td className="font-bold">Actions</td>
-              </tr>
-            </thead>
-            <tbody>
-              {employees?.map((employee) => {
-                return (
-                  <>
-                    &nbsp;
-                    <tr className="text-center">
-                      <td>{employee?.ID}</td>
-                      <td>
-                        {employee?.FirstName} {employee?.LastName}
-                      </td>
-
-                      <td>{employee?.EMail}</td>
-                      <td>{employee?.Gender === "F" ? "Female" : "Male"}</td>
-                      <td>{employee?.Salary}</td>
-                      <td>
-                        <div className="flex flex-row justify-center items-center  ">
-                          <Trash className="cursor-pointer text-xl text-red-500" />
-                          &nbsp; &nbsp; &nbsp; &nbsp;
-                          <Eye className="cursor-pointer text-xl " />
-                        </div>
-                      </td>
-                    </tr>
-                  </>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <ConfirmDialog
+          isShow={toDeleteEmployee != null}
+          onClose={() => {
+            setToDeleteEmployee(null);
+          }}
+          onYes={() => {
+            deleteEmployee();
+          }}
+          title={
+            <strong className="flex flex-row items-center justify-center">
+              <Trash />
+              &nbsp; Delete Employee
+            </strong>
+          }
+          text={
+            <p>
+              Are you sure you want to delete{" "}
+              <strong>
+                {toDeleteEmployee?.FirstName} {toDeleteEmployee?.LastName}
+              </strong>
+              ? <br />
+              This cannot be undone
+            </p>
+          }
+        />
 
         <AddNewEmployee
           isShow={isShowAddNewEmployee}
