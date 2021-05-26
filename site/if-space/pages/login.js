@@ -1,6 +1,10 @@
+import {useEffect} from "react";
+
 import Head from "next/head";
-import { Image, Form, Button, Container, Row, Col, } from 'react-bootstrap';
-import { Controller, useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+
+import { Image, Form, Button, } from 'react-bootstrap';
+import { Controller, useForm, } from "react-hook-form";
 
 export default function Login() {
     const {
@@ -9,7 +13,15 @@ export default function Login() {
         formState: { errors, isSubmitted },
     } = useForm();
 
-    const onSubmit = () => {}
+    const router = useRouter();
+
+    const onSubmit = () => {
+        router.push('/');
+    }
+
+    // useEffect(() => {
+    //     router.push('/');
+    // }, []);
     return (
         <>
             <Head>
