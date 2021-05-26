@@ -4,19 +4,19 @@ export default function NavigationBar() {
   const navigation = [
     {
       title: "Home",
-      url: "/home",
+      url: "/dashboard",
     },
     {
       title: "Attendance",
-      url: "/home",
+      url: "/attendance",
     },
     {
       title: "Inventory",
-      url: "/home",
+      url: "/inventory",
     },
     {
       title: "Analyze",
-      url: "/home",
+      url: "/analyze",
     },
   ];
 
