@@ -10,6 +10,10 @@ from .models import *
 from datetime import datetime
 from django.views.generic.list import BaseListView
 
+import sys
+sys.path.insert(1, '../cuckoo')
+
+
 # import hash tables
 from cuckoo import *
 from chain import *

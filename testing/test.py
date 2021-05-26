@@ -1,4 +1,7 @@
+import sys
+sys.path.insert(1, '../cuckoo')
 from cuckoo import Cuckoo
+
 import random
 
 
