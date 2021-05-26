@@ -54,7 +54,12 @@ def get_data(key):
 
 
 def get_all_data(max_value):
-    keys =  table_cuckoo.keys()
+    
+    if mode == 1:
+        keys =  table_cuckoo.keys()
+    else:
+        keys  = table_chain.keys()
+        
     if max_value !=None:
         keys[:min(len(keys),max_value)]
 
