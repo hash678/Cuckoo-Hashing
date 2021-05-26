@@ -14,7 +14,9 @@
     "react": "17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-dom": "17.0.2",
-    "react-hook-form": "^7.6.7"
+    "react-hook-form": "^7.6.7",
+    "react-request": "^3.2.0",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",
