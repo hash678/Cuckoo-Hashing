@@ -5,21 +5,20 @@ from flask import request
 
 app = Flask(__name__)
 
+
 import sys
 sys.path.insert(1, './cuckoo')
 
-app.run(debug=True)
+# app.run(debug=True)
 
 # import hash tables
 from cuckoo import *
 from chain import *
 
-
 mode = 1
 
 table_cuckoo = Cuckoo()
 table_chain = Chain()
-
 
 
 #Insert data into cuckoo or chaining table
@@ -46,7 +45,6 @@ def set_mode():
 
 @app.route('/')
 def hello_world():
-
     id = request.args.get('id')
     return jsonify(get_data(id))
 
@@ -58,3 +56,4 @@ def data():
     insert_data(id,user)
     return "Successful"
 
+app.run()
