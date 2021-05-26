@@ -30,6 +30,11 @@ def delete_employee(key):
     print(table_cuckoo.pop(key))
     table_chain.discard(key)
 
+
+def delete_employees_all():
+    keys = [table_cuckoo[key] for key in table_cuckoo.keys()]
+    for key in keys:
+        delete_employee(key)
 #Insert data into cuckoo or chaining table
 def insert_data(key,data):
     if mode == 1:
@@ -92,9 +97,15 @@ def employees_all():
 
 
 
-@app.route('/employees-batch/', methods = [ 'GET', 'POST'])
+@app.route('/employees-batch/', methods = [ 'GET', 'POST','DELETE'])
 @cross_origin()
 def employees_batch():
+
+    if request.method == "DELETE":
+        delete_employees_all()
+        return 'Deleted All'
+
+
     f = request.files['data_file']
     if not f:
         return "No file"
@@ -116,6 +127,8 @@ def employees_batch():
         insert_data(id,some_data)
 
     return "Insert Complete"
+
+
 
 
 
