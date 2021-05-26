@@ -91,7 +91,11 @@ export default function Attendance() {
                 </tbody>
             </table>
 
-            <PopupDialog isShow={isShowPopupDialog} onClose={() => {setIsShowPopupDialog(false)}}/>
+            <PopupDialog
+                isShow={isShowPopupDialog}
+                onClose={() => {setIsShowPopupDialog(false)}}
+                message={`Congratulations!\nYour attendance has been marked`}
+            />
 
 
         </DefaultLayout>
