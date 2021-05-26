@@ -71,7 +71,7 @@ export default function Attendance() {
                             <td>{val?.timeIn ?? `No Entry Time`}</td>
                             <td>{val?.timeOut ?? `No Exit Time`}</td>
                             <td>
-                                <Button className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white mb-0">Mark Entry</Button>
+                                <Button className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white mb-0">Mark Attendance</Button>
                                 <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">Mark Exit</Button>
                             </td>
                         </tr>
