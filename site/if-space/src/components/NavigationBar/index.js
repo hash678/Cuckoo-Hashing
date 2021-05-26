@@ -31,7 +31,7 @@ export default function NavigationBar() {
         );
 
       })}
-      <h2 className="ml-auto font-medium text-lg  bg-pink-500 text-center rounded-md text-white h-12 w-12 align-middle justify-center flex flex-col hover:bg-pink-900 cursor-pointer">JU</h2>
+      <h2 className="ml-auto font-medium text-lg bg-pink-500 hover:bg-pink-600 text-center rounded-md text-white h-12 w-12 align-middle justify-center flex flex-col hover:bg-pink-900 cursor-pointer">JU</h2>
 
     </div>
   );
