@@ -15,7 +15,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
 
     return (
             <Modal id="fullScreenModalId" show={isShow} onHide={onClose} dialogClassName="fullscreen-modal" >
-                <div className="bg-white w-1/3 p-8">
+                <div className="bg-white w-8/12 p-8" style={{ height: "80%" }}>
                     <div className="mb-5">
                         <div className="flex flex-row w-full">
                             <h1 className="font-bold text-2xl">Add Attendance Record</h1>
@@ -53,7 +53,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                                     required
                                                     placeholder="Date"
                                                     {...field}
-                                                    isInvalid={!!errors.name}
+                                                    isInvalid={!!errors.date}
                                                 />
                                             )}
                                             name="date"
@@ -68,10 +68,8 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                         render={({ field }) => (
                                             <Form.Control
                                                 className="w-full focus:outline-none border h-12 px-4 mb-4 w-full"
-                                                required
                                                 placeholder="Notes"
                                                 {...field}
-                                                isInvalid={!!errors.name}
                                             />
                                         )}
                                         name="notes"
@@ -85,6 +83,38 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                 >
                                     Add Record
                                 </Button>
+                            </Form>
+                        }
+
+                        {
+                            batch &&
+                            <Form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+                                <Form.Group className="flex flex-row w-full justify-center items-center">
+                                    <Controller
+                                        render={({ field }) => (
+                                            <Form.Control
+                                                className="w-1/2 mr-2 focus:outline-none border h-10 px-4 w-full"
+                                                required
+                                                placeholder="Upload CSV"
+                                                {...field}
+                                                isInvalid={!!errors.file}
+                                            />
+                                        )}
+                                        name="csvFile"
+                                        control={control}
+                                        rules={{
+                                            required: "Please upload a CSV file",
+                                        }}
+                                    />
+
+                                    <Button
+                                        type="submit"
+                                        className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white self-end w-5/12"
+                                        style={{ marginBottom: "0" }}
+                                    >
+                                        Add Record
+                                    </Button>
+                                </Form.Group>
                             </Form>
                         }
 

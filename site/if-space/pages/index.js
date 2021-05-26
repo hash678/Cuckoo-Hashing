@@ -15,6 +15,7 @@ import ConfirmDialog from "../src/components/ConfirmDialog";
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
   const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
+  const [isBatch, setIsBatch] = useState(false);
 
   const [employees, setEmployees] = useState([]);
 
@@ -65,6 +66,7 @@ export default function Home() {
           <div className="flex flex-row mb-8 ml-auto items-start">
             <Button
               onClick={() => {
+                setIsBatch(false);
                 setIsShowAddNewEmployee(true);
               }}
               className="flex flex-row justify-center items-center focus:outline-none px-2 py-2 rounded-md text-pink-500"
@@ -75,9 +77,10 @@ export default function Home() {
             </Button>
             <Button
               onClick={() => {
+                setIsBatch(true);
                 setIsShowAddNewEmployee(true);
               }}
-              className="flex flex-row justify-center items-center focus:outline-none px-2 py-2 rounded-md text-pink-500 "
+              className="flex flex-row justify-center items-center focus:outline-none px-2 py-2 rounded-md text-pink-500"
             >
               <Cloud />
               &nbsp; Batch Upload
@@ -122,9 +125,8 @@ export default function Home() {
 
         <AddNewEmployee
           isShow={isShowAddNewEmployee}
-          onClose={() => {
-            setIsShowAddNewEmployee(false);
-          }}
+          onClose={() => { setIsShowAddNewEmployee(false); }}
+          batch={isBatch}
         />
       </div>
     </DefaultLayout>
