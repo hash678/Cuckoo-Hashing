@@ -27,8 +27,10 @@ table_chain = Chain()
 
 
 def delete_employee(key):
-    print(table_cuckoo.pop(key))
-    table_chain.discard(key)
+    if mode == 1:
+        table_cuckoo.pop(key)
+    if mode == 0:
+        table_chain.discard(key)
 
 
 def delete_employees_all():
@@ -40,9 +42,9 @@ def delete_employees_all():
 def insert_data(key,data):
     if mode == 1:
         table_cuckoo[key] = data
-        return
-    
-    table_chain[key] = data
+        return 
+    else:   
+        table_chain[key] = data
 
 #Get data from cuckoo and chaining 
 def get_data(key):
@@ -56,8 +58,10 @@ def get_all_data(max_value):
     if max_value !=None:
         keys[:min(len(keys),max_value)]
 
-    return [table_cuckoo[key] for key in keys]
-
+    if mode == 1:
+        return [table_cuckoo[key] for key in keys]
+    else:
+        return [table_chain[key] for key in keys]
 
 @app.route('/set')
 def set_mode():
