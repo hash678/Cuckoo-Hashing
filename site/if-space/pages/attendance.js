@@ -5,11 +5,12 @@ import DefaultLayout from "../src/components/DefaultLayout";
 import {Button} from "react-bootstrap";
 import AddNewEmployee from "../src/components/AddNewEmployee";
 import {useState} from "react";
-import PopupDialog from "../src/components/PopupDialog";
+import AddAttendanceRecord from "../src/components/AddAttendanceRecord";
 
 export default function Attendance() {
 
     const [isShowPopupDialog, setIsShowPopupDialog] = useState(false);
+    const [isBatch, setIsBatch] = useState(false);
 
     const attendanceData = [
         {
@@ -48,7 +49,15 @@ export default function Attendance() {
                 <p className="text-black font-light">Hello Jamal. <br/>
                     <p className="font-bold text-lg">Welcome to your attendance portal.</p>
                 </p>
-                {/*<Button onClick={() => {setIsShowPopupDialog(true)}} className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white ml-auto">Add employee</Button>*/}
+                <Button
+                    onClick={() => {
+                        setIsBatch(true);
+                        setIsShowPopupDialog(true);
+                    }}
+                    className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white ml-auto"
+                >
+                    Batch Upload Attendance
+                </Button>
 
             </div>
 
@@ -58,10 +67,10 @@ export default function Attendance() {
             <table className="table-auto w-full">
                 <thead>
                 <tr className="bg-black text-white px-4 text-center">
-                    <td className="font-bold ">Date</td>
-                    <td className="font-bold ">Time In</td>
-                    <td className="font-bold ">Time Out</td>
-                    <td className="font-bold w-1/3">Actions</td>
+                    <td className="font-bold">Date</td>
+                    <td className="font-bold">Name of Employee</td>
+                    <td className="font-bold w-1/3">Notes</td>
+                    <td className="font-bold w-1/4">Actions</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -73,15 +82,18 @@ export default function Attendance() {
                             <td>{val?.timeOut ?? `No Exit Time`}</td>
                             <td>
                                 <Button
-                                    className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white"
+                                    className="focus:outline-none mb-8 bg-pink-500 hover:bg-pink-600 px-4 py-2 rounded-md text-white"
                                     style={{ marginBottom: "0" }}
-                                    onClick={() => { setIsShowPopupDialog(true) }}
+                                    onClick={() => {
+                                        setIsBatch(false);
+                                        setIsShowPopupDialog(true) ;
+                                    }}
                                 >
-                                    Mark Attendance
+                                    Add Record
                                 </Button>
 
                                 <Button className="text-red-600 text-white mx-2 rounded-2xl px-8 py-3 focus:outline-none hover:text-black">
-                                    I'm Leaving the Office
+                                    Delete Record
                                 </Button>
                             </td>
                         </tr>
@@ -91,10 +103,10 @@ export default function Attendance() {
                 </tbody>
             </table>
 
-            <PopupDialog
+            <AddAttendanceRecord
                 isShow={isShowPopupDialog}
                 onClose={() => {setIsShowPopupDialog(false)}}
-                message={`Congratulations!\nYour attendance has been marked`}
+                batch={isBatch}
             />
 
 
