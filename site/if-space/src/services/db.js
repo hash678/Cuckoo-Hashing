@@ -5,7 +5,7 @@ export default class DB {
   static async insertEmployee(data) {}
 
   static async loadEmployees() {
-    let jsonData = await fetch(BASE_URL + "/employees-all").then((res) =>
+    let jsonData = await fetch(BASE_URL + "/employees-batch/").then((res) =>
       res.json()
     );
     return jsonData;
