@@ -32,7 +32,7 @@ export default function Home() {
 
         <table className="table-auto w-full">
             <thead>
-            <tr className="bg-black text-white px-4">
+            <tr className="bg-black text-white px-4 text-center">
                 <td className="font-bold">ID</td>
                 <td className="font-bold">Name</td>
                 <td className="font-bold">Email</td>
@@ -42,8 +42,7 @@ export default function Home() {
             </tr>
             </thead>
            <tbody>
-           <tr>
-
+           <tr className="text-center">
                <td>ID</td>
                <td>Name</td>
                <td>Email</td>
@@ -51,7 +50,6 @@ export default function Home() {
                <td>Salary</td>
            </tr>
            </tbody>
-
         </table>
 
         <AddNewEmployee isShow={isShowAddNewEmployee} onClose={() => {setIsShowAddNewEmployee(false)}}/>

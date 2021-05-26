@@ -4,7 +4,7 @@ export default function NavigationBar() {
   const navigation = [
     {
       title: "Home",
-      url: "/dashboard",
+      url: "/",
     },
     {
       title: "Attendance",
