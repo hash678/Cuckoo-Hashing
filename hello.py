@@ -24,7 +24,12 @@ from chain import *
 mode = 1
 
 table_cuckoo = Cuckoo()
+
+
+
+
 table_chain = Chain()
+
 
 
 def delete_employee(key):
@@ -149,8 +154,6 @@ def employees_batch():
     timeTaken = (time.time()-start_time)
     print(timeTaken)
     return jsonify({'timeTaken':timeTaken})
-
-
 
 
 

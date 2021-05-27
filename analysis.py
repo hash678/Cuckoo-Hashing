@@ -46,7 +46,7 @@ def RunTimerowInsertion(isCuckoo):
 
 def experiment():
     y = []  
-    for i in range(100):
+    for i in range(2):
         y.append( RunTimebatchInsertion(True)  )
 
     bins = int( math.sqrt(len(y)) )

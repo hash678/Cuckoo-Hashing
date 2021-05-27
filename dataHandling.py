@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(1, './cuckoo')
+
 from cuckoo import *
 from chain  import *
 import csv
@@ -5,24 +8,30 @@ import csv
 isCuckoo = None
 table = None
 
-def definer(cuckoo):
-    isCuckoo = cuckoo
 
-if isCuckoo:
-    table = Cuckoo()
-if not isCuckoo:
-    table = Chain()
+
+def definer(cuckoo):
+    global table
+    global isCuckoo
+    isCuckoo = cuckoo
+    
+    batchList()
+
+    if isCuckoo:
+        table = Cuckoo()
+    if not isCuckoo:
+        table = Chain()
 
 
 def batchList():
+    global data
     with open('records.csv', newline='') as f:
         reader = csv.reader(f)
         data = list(reader)
 
-    return data
+    
 
 def batchInsert():
-    data = batchList()
 
     cols = data[0]
     del data[0]
@@ -37,7 +46,6 @@ def batchInsert():
 
 
 def rowsInsertion(rows):
-    data = batchList()
 
     cols = data[0]
     del data[0]
