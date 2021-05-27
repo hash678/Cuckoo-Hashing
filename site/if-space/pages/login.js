@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { Image, Form, Button, } from 'react-bootstrap';
 import { Controller, useForm, } from "react-hook-form";
 
+import { Person, } from "react-bootstrap-icons"
+
 export default function Login() {
     const {
         handleSubmit,
@@ -29,8 +31,9 @@ export default function Login() {
             </Head>
 
             <div className="h-screen flex justify-center items-center">
-                <div className="w-1/4 border border-5 border-black rounded-md flex flex-col flex-wrap p-5" style={{ height: "50%" }}>
-                    <h1 className="text-black text-4xl text-center my-8 font-medium">Login</h1>
+                <div className="w-1/4 border-2 border-pink-500 rounded-md flex flex-col flex-wrap px-5 py-8" style={{ height: "50%" }}>
+                    <Person className="text-6xl text-pink-500 mx-auto border-pink-500" />
+                    <h1 className="text-black text-3xl text-center mt-2 mb-8 font-medium">Login</h1>
 
                     <Form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                         <Form.Group className="w-full">

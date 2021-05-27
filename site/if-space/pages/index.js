@@ -11,9 +11,11 @@ import { Cloud } from "react-bootstrap-icons";
 import { Trash } from "react-bootstrap-icons";
 import DisplayEmployees from "../src/components/DisplayEmployees";
 import ConfirmDialog from "../src/components/ConfirmDialog";
+import ViewEmployee from "../src/components/ViewEmployee";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
+  const [isShowEmployee, setIsShowEmployee] = useState(false);
   const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
   const [isBatch, setIsBatch] = useState(false);
 
@@ -54,9 +56,12 @@ export default function Home() {
       </Head>
 
       <br />
+
+      <ViewEmployee isShow={isShowEmployee} onClose={() => setIsShowEmployee(false)} />
+
       <div className="h-screen overflow-hidden">
         <div className="flex flex-wrap ">
-          <p className="text-black font-light">
+          <p className="text-black font-light" onClick={() => { setIsShowEmployee(true); }}>
             Welcome Jamal. <br />
             <p className="font-bold text-lg">
               What would you like to do today?
