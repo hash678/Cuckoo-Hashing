@@ -1,6 +1,7 @@
 import enum
 from copy import deepcopy
 from helper import *
+import pickle
 
 import os
 import sys
@@ -19,8 +20,8 @@ class Cuckoo:
     current_size = 0
     selected_table:Table = Table.Table_A
     
-    max_iterations = 10
-    resize_multiplier = 2
+    max_iterations = 3
+    resize_multiplier = 12
 
 
     
@@ -33,11 +34,11 @@ class Cuckoo:
                 
         
         #Setting max length of each has table to 3 times the initial data's size.
-        self.max_size = max(len(data.keys()) * 3,100)
+        self.max_size = max(len(data.keys()) ** 2,50)
 
         #Side note: out occupied indexes actually follow a pattern. 
         #At the first index of the string we have the table. The other thing is the key   
-        self.occupied_indexes = []
+       # self.occupied_indexes = []
 
         #Creating two hashtables
         self.tableA = [None for x in range(self.max_size)]
@@ -45,7 +46,7 @@ class Cuckoo:
 
         self.insert_all(data)
 
-        log("BATCH INSERTING: "+str(data))
+        # log("BATCH INSERTING: "+str(data))
 
 
 
@@ -91,10 +92,12 @@ class Cuckoo:
 
         if self.tableA[index] != None and self.tableA[index][0] == key:
             self.tableA[index] = None
+           # self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
             return True
         
         if self.tableB[index] != None and self.tableB[index][0] == key:
             self.tableB[index] = None
+           # self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
             return True
 
 
@@ -102,14 +105,16 @@ class Cuckoo:
         
         keys = []
 
-        for index in self.occupied_indexes:
-            if index[0] == str(Table.Table_A.value):
-                index_table = int(index[1:]) 
-                keys.append(self.tableA[index_table][0])
 
-            if index[0] == str(Table.Table_B.value):
-                index_table = int(index[1:]) 
-                keys.append(self.tableB[index_table][0])
+
+        for index in self.tableA:
+            if index != None:
+                keys.append(index[0])
+
+
+        for index in self.tableB:
+            if index != None:
+                keys.append(index[0])
 
         return keys
 
@@ -122,7 +127,7 @@ class Cuckoo:
 
     #replace value if already exists
     def replace_value(self,index:int,newValue,table:Table):
-        log("REPLACING VALUE")
+        # log("REPLACING VALUE")
 
         if table == Table.Table_A:
             self.tableA[index] = (self.tableA[index][0],newValue)
@@ -143,25 +148,25 @@ class Cuckoo:
             carry_over_value = self.tableA[index]
             self.tableA[index] = item
 
-            log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+            # log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
 
-            self.occupied_indexes.append(str(table.value)+str(index))
+            #self.occupied_indexes.append(str(table.value)+str(index))
             
         elif self.selected_table == Table.Table_B:
             carry_over_value = self.tableB[index]
             self.tableB[index] = item
 
-            log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
+            # log("INSERTING KEY INTO :" +str(table.value)+ " "+str(item))
 
-            self.occupied_indexes.append(str(table.value)+str(index))
+            #self.occupied_indexes.append(str(table.value)+str(index))
 
 
         if carry_over_value != None:    
-            log("CARRY OVER VALUE: "+str(carry_over_value))
-            log("REMOVED FROM NEST: "+str(table.value))
+            # log("CARRY OVER VALUE: "+str(carry_over_value))
+            # log("REMOVED FROM NEST: "+str(table.value))
 
            
-            self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
+          #  self.occupied_indexes.pop( self.occupied_indexes.index(str(table.value)+str(index)))
 
             if carry_over_value[0] == item[0]:
                 self.replace_value(index,carry_over_value[1],table)
@@ -192,9 +197,9 @@ class Cuckoo:
 
 
     def push(self,item, count = 0) -> bool:
-        log("\nINSERTING ITEM: "+str(item))
-        log("SELECTED TABLE "+str(self.selected_table.value))
-        log("-----------------------------")
+        # log("\nINSERTING ITEM: "+str(item))
+        # log("SELECTED TABLE "+str(self.selected_table.value))
+        # log("-----------------------------")
 
 
 
@@ -249,13 +254,14 @@ class Cuckoo:
 
         self.current_size = 0
         self.selected_table = Table.Table_A
-        self.occupied_indexes = []
+       # self.occupied_indexes = []
 
     
     def re_hash(self):
         
         #make a copy of our current data
-        copy_self = deepcopy(self)
+        copy_self = pickle.loads(pickle.dumps(self))
+        
 
         self.max_size = self.max_size * self.resize_multiplier
         self.clear()
@@ -270,24 +276,18 @@ class Cuckoo:
         return int(value % bound)
 
 
-
     #hashing function
     #returns a key depending on the hash table selected
     def hash(self,key,table:Table):
         
-        hash_value = hash(key)
+        hash_value = int(key)
 
         
 
         if (table == Table.Table_A):
-            return self.bound_value(hash_value/11,self.max_size) 
+            return self.bound_value(hash_value,self.max_size) 
         
-        hashedIndex = self.bound_value(hash_value,self.max_size)
-
-        # print(key)
-        # print(hash_value)
-        # print(hashedIndex)
-        # print("key \n")
+        hashedIndex = self.bound_value(hash_value+1,self.max_size)
 
         return hashedIndex
 
