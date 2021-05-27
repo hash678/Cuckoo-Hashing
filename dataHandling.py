@@ -3,15 +3,9 @@ from chain  import *
 import csv
 
 isCuckoo = True
-table = None
-
-if isCuckoo:
-    table = Cuckoo()
-else:
-    table = Chain()    
 
 
-with open('records.csv', newline='') as f:
+with open('records2.csv', newline='') as f:
     reader = csv.reader(f)
     data = list(reader)
 
@@ -20,6 +14,11 @@ del data[0]
 
 
 def batchInsert():
+    if isCuckoo:
+        table = Cuckoo()
+    else:
+        table = Chain()    
+
     for entry in data:
         id = entry[0]
         curr_data = dict()
@@ -29,16 +28,19 @@ def batchInsert():
 
     return table
 
-
 def rowsInsertion(rowNum):
+    if isCuckoo:
+        dataTable = Cuckoo()
+    else:
+        dataTable = Chain()
     for entry in data [0:rowNum]:
         id = entry[0]
         curr_data = dict()
         for i in range(0, len(cols) ):
             curr_data[cols[i]] = entry[i]
-        table[id] = curr_data
+        dataTable[id] = curr_data
 
 
-def batchDeletion():
+def batchDeletion(table):
     for key in table.keys():
         table.pop(key)

@@ -7,11 +7,11 @@ import numpy as np
 
 
 def RunTimebatchDeletion():
-    batchInsert()
+    table = batchInsert()
 
     start = time.time()
 
-    batchDeletion()
+    batchDeletion(table)
 
     time.sleep(1)
     end = time.time()
@@ -54,7 +54,7 @@ def PlotRowRunTime1():
 def PlotRowRunTime2():
     xvalues = []
     yvalues = []
-    for i in range(0, len(data), 1000):
+    for i in range(0, len(data), 32000):
         xvalues.append(i)
         yvalues.append( RunTimerowInsertion(i) )
 
@@ -106,6 +106,6 @@ def experiment2():
 # PlotRowRunTime1()
 
 
-## Test CSV file with 160,000 rows (graph of every 10000 rows)
-# PlotRowRunTime2()
+## Test CSV file with 160,000 rows (graph of every 32000 rows)
+PlotRowRunTime2()
 
