@@ -29,7 +29,6 @@ export default function Home() {
   const loadEmployees = () => {
     DB.loadEmployees()
       .then((data) => {
-        console.log(data);
         setEmployees(data);
       })
       .catch((error) => {

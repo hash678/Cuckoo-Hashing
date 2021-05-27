@@ -1,13 +1,17 @@
 import sys
-sys.path.insert(1, '../cuckoo')
-from cuckoo import Cuckoo
-
 import random
 
 
+import sys
+sys.path.insert(1, './cuckoo')
+
+
+# import hash tables
+from cuckoo import *
+
 #Batch insert and retrieval tests 
 def data_insert(size):
-    sample_keys = ['key'+str(x**2) for x in range(size)]
+    sample_keys = [str(x**2) for x in range(size)]
 
     sample_data = dict()
 
@@ -31,7 +35,7 @@ def data_insert(size):
 #Random inserts and retrieval tests 
 def random_inserts(size):
     
-    sample_keys = ['key'+str(x**2) for x in range(size)]
+    sample_keys = [str(x**2) for x in range(size)]
 
     sample_data = dict()
 

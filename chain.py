@@ -9,7 +9,7 @@ class Chain:
         return (2**self.d)
 
     def hashed(self, x):
-        return hash(x) % len(self)
+        return int(x) % len(self)
 
     def find(self, key):
         index = self.hashed(key) # Find the hashed index

@@ -45,6 +45,7 @@ def insert_data(key,data):
         table_cuckoo[key] = data
         return 
     else:   
+        # print("USING CHAINING")
         table_chain[key] = data
 
 #Get data from cuckoo and chaining 
@@ -61,8 +62,8 @@ def get_all_data(max_value):
     else:
         keys  = table_chain.keys()
         
-    if max_value !=None:
-        keys[:min(len(keys),max_value)]
+    # if max_value !=None:
+    #     keys[:min(len(keys),max_value)]
 
     if mode == 1:
         return [table_cuckoo[key] for key in keys]
@@ -97,8 +98,8 @@ def employees(user_id):
 
     if request.method == "GET":
         start_time = time.time()
-        gotData = get_all_data(user_id)
-        jsonify({'timeTaken':(time.time()-start_time),'data':gotData})
+        gotData = get_data(user_id)
+        return jsonify({'timeTaken':(time.time()-start_time),'data':gotData})
 
 
 
@@ -140,13 +141,14 @@ def employees_batch():
 
     for entry in data:    
         id = entry[0]
-        print(id)
         some_data = {}
         for i in range(0, len(cols) ):
             some_data[cols[i]] = entry[i]
         insert_data(id,some_data)
 
-    return jsonify({'timeTaken':(time.time()-start_time)})
+    timeTaken = (time.time()-start_time)
+    print(timeTaken)
+    return jsonify({'timeTaken':timeTaken})
 
 
 
