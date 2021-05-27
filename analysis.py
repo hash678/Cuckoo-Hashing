@@ -1,23 +1,24 @@
-import time
+
+    
 from dataHandling import *
+import time
 from analysisHelper import *
 import numpy as np
 
-def RunTimebatchDeletion(isCuckoo):
-    definer(isCuckoo)
-    batchInsert()
+
+def RunTimebatchDeletion():
+    table = batchInsert()
 
     start = time.time()
 
-    batchDeletion()
+    batchDeletion(table)
 
     time.sleep(1)
     end = time.time()
 
     return (end - start) #time taken
  
-def RunTimebatchInsertion(isCuckoo):
-    definer(isCuckoo)
+def RunTimebatchInsertion():
 
     start = time.time()
 
@@ -29,34 +30,81 @@ def RunTimebatchInsertion(isCuckoo):
     return (end - start) #time taken
 
 
-def RunTimerowInsertion(isCuckoo):
-    definer(isCuckoo)
-    data = batchList()
+def RunTimerowInsertion(n):
+    start = time.time()
 
+    rowsInsertion(n)
+
+    time.sleep(1)
+    end = time.time()
+
+    return (end - start) #time taken    
+
+
+def PlotRowRunTime1():
     xvalues = []
     yvalues = []
-    for i in range(0, len(data), 1000):
+    for i in range(0, len(data), 500):
         xvalues.append(i)
-        yvalues.append( rowsInsertion(i) )
+        yvalues.append( RunTimerowInsertion(i) )
 
     plot(xvalues, yvalues)
 
 
+def PlotRowRunTime2():
+    xvalues = []
+    yvalues = []
+    for i in range(0, len(data), 32000):
+        xvalues.append(i)
+        yvalues.append( RunTimerowInsertion(i) )
+
+    plot(xvalues, yvalues)
     
 
-def experiment():
+def experiment1():
     y = []  
-    for i in range(2):
-        y.append( RunTimebatchInsertion(True)  )
+    for i in range(10):
+        y.append( RunTimebatchInsertion()  )
 
     bins = int( math.sqrt(len(y)) )
     binWidth = (max(y) - min(y) ) / bins
     plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
     edgecolor='black' )
     plt.title("Time taken")
-    plt.xlabel("")
+    plt.xlabel("time")
     plt.ylabel("frequency")
     plt.show ()
 
 
-experiment()
+
+def experiment2():
+    y = []  
+    for i in range(10):
+        y.append( RunTimebatchDeletion()  )
+
+    bins = int( math.sqrt(len(y)) )
+    binWidth = (max(y) - min(y) ) / bins
+    plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
+    edgecolor='black' )
+    plt.title("Time taken")
+    plt.xlabel("time")
+    plt.ylabel("frequency")
+    plt.show ()
+
+
+
+
+## Test Batch insertion
+# experiment1()
+
+
+## Test Batch deletion
+experiment2()
+
+
+## Test CSV with 2500 rows (graph of every 500 rows)
+# PlotRowRunTime1()
+
+
+## Test CSV file with 160,000 rows (graph of every 32000 rows)
+#PlotRowRunTime2()

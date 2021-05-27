@@ -20,12 +20,12 @@ class Cuckoo:
     current_size = 0
     selected_table = 0
     
-    max_iterations = 24
+    max_iterations = 6
     resize_multiplier = 12
 
     
 
-    total_tables = 4
+    total_tables = 2
     tables = [[] for i in range(total_tables)]
     
 

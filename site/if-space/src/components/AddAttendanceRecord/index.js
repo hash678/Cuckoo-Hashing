@@ -1,7 +1,8 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
+import DB from "../../services/db";
 
-export default function AddAttendanceRecord({ isShow, onClose, batch, }){
+export default function AddAttendanceRecord({ isShow, onClose }){
 
     const {
         handleSubmit,
@@ -11,11 +12,14 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
 
     const onSubmit = (values) => {
         console.log(values)
+        DB.addAttendance(values).then(() => {
+            onClose()
+        })
     }
 
     return (
             <Modal id="fullScreenModalId" show={isShow} onHide={onClose} dialogClassName="fullscreen-modal" >
-                <div className="bg-white w-8/12 p-8" style={{ height: "80%" }}>
+                <div className="bg-white w-8/12 p-8" >
                     <div className="mb-5">
                         <div className="flex flex-row w-full">
                             <h1 className="font-bold text-2xl">Add Attendance Record</h1>
@@ -24,10 +28,26 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                     </div>
 
                     <div className="">
-                        {
-                            !batch &&
+
                             <Form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
                                 <Form.Group className="w-full">
+
+                                    <Controller
+                                        render={({ field }) => (
+                                            <Form.Control
+                                                className="w-1/2 mr-2 focus:outline-none border h-12 px-4 mb-4 w-full"
+                                                required
+                                                placeholder="Employee ID"
+                                                {...field}
+                                                isInvalid={!!errors.name}
+                                            />
+                                        )}
+                                        name="id"
+                                        control={control}
+                                        rules={{
+                                            required: "Please enter an employee name",
+                                        }}
+                                    />
                                     <div className="flex flex-row w-full">
                                         <Controller
                                             render={({ field }) => (
@@ -39,12 +59,13 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                                     isInvalid={!!errors.name}
                                                 />
                                             )}
-                                            name="name"
+                                            name="Name"
                                             control={control}
                                             rules={{
                                                 required: "Please enter an employee name",
                                             }}
                                         />
+
 
                                         <Controller
                                             render={({ field }) => (
@@ -52,11 +73,14 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                                     className="w-1/2 ml-2 focus:outline-none border h-12 px-4 mb-4 w-full"
                                                     required
                                                     placeholder="Date"
+                                                    type="datetime-local"
                                                     {...field}
+
                                                     isInvalid={!!errors.date}
                                                 />
                                             )}
                                             name="date"
+
                                             control={control}
                                             rules={{
                                                 required: "Please enter a date",
@@ -72,7 +96,7 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                                 {...field}
                                             />
                                         )}
-                                        name="notes"
+                                        name="Notes"
                                         control={control}
                                     />
                                 </Form.Group>
@@ -84,39 +108,8 @@ export default function AddAttendanceRecord({ isShow, onClose, batch, }){
                                     Add Record
                                 </Button>
                             </Form>
-                        }
 
-                        {
-                            batch &&
-                            <Form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-                                <Form.Group className="flex flex-row w-full justify-center items-center">
-                                    <Controller
-                                        render={({ field }) => (
-                                            <Form.Control
-                                                className="w-1/2 mr-2 focus:outline-none border h-10 px-4 w-full"
-                                                required
-                                                placeholder="Upload CSV"
-                                                {...field}
-                                                isInvalid={!!errors.file}
-                                            />
-                                        )}
-                                        name="csvFile"
-                                        control={control}
-                                        rules={{
-                                            required: "Please upload a CSV file",
-                                        }}
-                                    />
 
-                                    <Button
-                                        type="submit"
-                                        className="focus:outline-none mb-8 bg-pink-500 px-4 py-2 rounded-md text-white self-end w-5/12"
-                                        style={{ marginBottom: "0" }}
-                                    >
-                                        Add Record
-                                    </Button>
-                                </Form.Group>
-                            </Form>
-                        }
 
                     </div>
                 </div>

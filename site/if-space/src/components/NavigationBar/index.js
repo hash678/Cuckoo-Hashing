@@ -18,13 +18,15 @@ export default function NavigationBar() {
 
     {
       title: "Our Analysis",
-      url: "/analyze",
+      url: "/analysis",
     },
   ];
 
   return (
     <div className="shadow-md bg-white h-16 w-full top-0 flex flex-row px-16  items-center mb-4">
-      <h2 className="mr-16 font-bold text-lg">Indexed Functions | ERP</h2>
+      <a href="/" className="mr-16 font-bold text-lg cursor-pointer">
+        Indexed Functions | ERP
+      </a>
       {navigation.map((item) => {
         return (
           <Link href={item.url}>

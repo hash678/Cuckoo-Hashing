@@ -16,4 +16,3 @@ def plot(x,y):
     # function to show the plot
     plt.show()
 
-

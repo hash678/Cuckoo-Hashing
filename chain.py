@@ -63,7 +63,7 @@ class Chain:
         return lst
 
     # Removes item from the table
-    def discard(self, key):
+    def pop(self, key):
         index = self.hashed(key) # Get the hashed index
         for k,v in self.table[index]: # If item exists 
             if k == key:

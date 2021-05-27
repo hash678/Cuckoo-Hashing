@@ -31,12 +31,18 @@ table_cuckoo = Cuckoo()
 table_chain = Chain()
 
 
+def delete_employee_attendance(key):
+    if mode == 1:
+        table_cuckoo[key]['Attendance'] = None
+    if mode == 0:
+        table_chain[key]['Attendance'] = None
+
 
 def delete_employee(key):
     if mode == 1:
         table_cuckoo.pop(key)
     if mode == 0:
-        table_chain.discard(key)
+        table_chain.pop(key)
 
 
 def delete_employees_all():
@@ -74,6 +80,34 @@ def get_all_data(max_value):
         return [table_cuckoo[key] for key in keys]
     else:
         return [table_chain[key] for key in keys]
+
+def delete_attendance_user(user_ID):
+    keys = [key for key in table_cuckoo.keys()]
+    for key in keys:
+        delete_employee_attendance(key)
+
+
+
+
+def mark_user_attendance(user_ID,data):
+    if mode == 1:
+
+        if not 'Attendance' in table_cuckoo[user_ID]:
+             table_cuckoo[user_ID]['Attendance'] = [data]
+        else:
+            table_cuckoo[user_ID]['Attendance'] = ([data] + table_cuckoo[user_ID]['Attendance'])
+        return 
+
+    else:
+        if not 'Attendance' in table_chain[user_ID]:
+             table_chain[user_ID]['Attendance'] = [data]
+        else:
+            table_chain[user_ID]['Attendance'] = ([data] + table_chain[user_ID]['Attendance'])
+        return 
+           
+        # print("USING CHAINING")
+   
+
 
 @app.route('/set')
 def set_mode():
@@ -156,6 +190,37 @@ def employees_batch():
     return jsonify({'timeTaken':timeTaken})
 
 
+@app.route('/attendance/<user_id>', methods = [ 'GET', 'POST','DELETE'])
+@cross_origin()
+def employee_attendance(user_id):
+
+    #Batch Delete Data
+    if request.method == "DELETE":
+        start_time = time.time()
+        delete_attendance_user(user_id)
+        return jsonify({'timeTaken':(time.time()-start_time)})
+
+    if request.method == "POST":
+        data = request.form
+        userData = data.to_dict()
+        start_time = time.time()
+        mark_user_attendance(user_id,userData)
+
+        timeTaken = (time.time()-start_time)
+        print(timeTaken)
+
+        return jsonify({'timeTaken':timeTaken})
+
+    if request.method == "GET":
+        data = request.form
+        userData = data.to_dict()
+        start_time = time.time()
+        attendance = get_data(user_id)['Attendance']
+
+        timeTaken = (time.time()-start_time)
+        print(timeTaken)
+
+        return jsonify({'timeTaken':timeTaken,'data':attendance})
 
 
 @app.route('/')

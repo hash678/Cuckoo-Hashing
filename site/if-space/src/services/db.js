@@ -80,4 +80,36 @@ export default class DB {
     toast(`${response?.timeTaken?.toFixed(2)}s taken in operation`);
     return response?.timeTaken?.toFixed(2);
   }
+
+  static async getAttendance(id){
+    let jsonData = await fetch(BASE_URL + "/attendance/" + id).then((res) =>
+        res.json()
+    );
+
+    toast(`${jsonData?.timeTaken?.toFixed(2)}s taken in operation`);
+    return jsonData?.data
+  }
+
+  static async addAttendance(data){
+
+    let id = data?.id
+
+    var formdata = new FormData();
+
+    formdata.append("date", data?.date);
+    formdata.append("Name", data?.Name);
+    formdata.append("Notes", data?.Notes);
+
+    var requestOptions = {
+      method: 'POST',
+      body: formdata,
+      redirect: 'follow'
+    };
+
+    fetch(BASE_URL+"/attendance/"+id, requestOptions)
+        .then(response => response.text())
+        .then(result => console.log(result))
+        .catch(error => console.log('error', error));
+  }
+
 }
