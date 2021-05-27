@@ -1,6 +1,7 @@
 import time
 from dataHandling import *
 from analysisHelper import *
+import numpy as np
 
 def RunTimebatchDeletion(isCuckoo):
     definer(isCuckoo)
@@ -48,6 +49,8 @@ def experiment():
     for i in range(100):
         y.append( batchInsert()  )
 
+    print("x")
+
     bins = int( math.sqrt(len(y)) )
     binWidth = (max(y) - min(y) ) / bins
     plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
@@ -56,3 +59,7 @@ def experiment():
     plt.xlabel("The proportion of rejection count")
     plt.ylabel("frequency")
     plt.show ()
+
+
+
+experiment()

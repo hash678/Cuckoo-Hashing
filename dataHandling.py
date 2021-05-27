@@ -2,13 +2,16 @@ from cuckoo import *
 from chain  import *
 import csv
 
+isCuckoo = None
+table = None
 
-def definer(icCuckoo):
-    global table
-    if icCuckoo:
-        table = Cuckoo()
-    else:
-        table = Chain()
+def definer(cuckoo):
+    isCuckoo = cuckoo
+
+if isCuckoo:
+    table = Cuckoo()
+if not isCuckoo:
+    table = Chain()
 
 
 def batchList():
