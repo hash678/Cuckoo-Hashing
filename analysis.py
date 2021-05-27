@@ -41,7 +41,7 @@ def RunTimerowInsertion(n):
     return (end - start) #time taken    
 
 
-def PlotRowRunTime():
+def PlotRowRunTime1():
     xvalues = []
     yvalues = []
     for i in range(0, len(data), 500):
@@ -50,9 +50,18 @@ def PlotRowRunTime():
 
     plot(xvalues, yvalues)
 
+
+def PlotRowRunTime2():
+    xvalues = []
+    yvalues = []
+    for i in range(0, len(data), 1000):
+        xvalues.append(i)
+        yvalues.append( RunTimerowInsertion(i) )
+
+    plot(xvalues, yvalues)
     
 
-def experiment():
+def experiment1():
     y = []  
     for i in range(10):
         y.append( RunTimebatchInsertion()  )
@@ -62,10 +71,41 @@ def experiment():
     plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
     edgecolor='black' )
     plt.title("Time taken")
-    plt.xlabel("")
+    plt.xlabel("time")
     plt.ylabel("frequency")
     plt.show ()
 
 
-PlotRowRunTime()
+
+def experiment2():
+    y = []  
+    for i in range(10):
+        y.append( RunTimebatchDeletion()  )
+
+    bins = int( math.sqrt(len(y)) )
+    binWidth = (max(y) - min(y) ) / bins
+    plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
+    edgecolor='black' )
+    plt.title("Time taken")
+    plt.xlabel("time")
+    plt.ylabel("frequency")
+    plt.show ()
+
+
+
+
+## Test Batch insertion
+# experiment1()
+
+
+## Test Batch deletion
+# experiment2()
+
+
+## Test CSV with 2500 rows (graph of every 500 rows)
+# PlotRowRunTime1()
+
+
+## Test CSV file with 160,000 rows (graph of every 10000 rows)
+# PlotRowRunTime2()
 
