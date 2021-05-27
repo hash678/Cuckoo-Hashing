@@ -15,12 +15,9 @@ export default function NavigationBar() {
       title: "Attendance",
       url: "/attendance",
     },
+
     {
-      title: "Inventory",
-      url: "/inventory",
-    },
-    {
-      title: "Analyze",
+      title: "Our Analysis",
       url: "/analyze",
     },
   ];
