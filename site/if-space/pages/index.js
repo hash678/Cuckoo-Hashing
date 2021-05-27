@@ -15,10 +15,9 @@ import CSVUpload from "../src/components/CSVUpload";
 
 export default function Home() {
   const [isShowAddNewEmployee, setIsShowAddNewEmployee] = useState(false);
+  const [isShowEmployee, setIsShowEmployee] = useState(false);
+  const [toDeleteEmployee, setToDeleteEmployee] = useState(null);
   const [isBatch, setIsBatch] = useState(false);
-
-  const [toDeleteEmployee, setToDeleteEmployee] = useState(false);
-
   const [employees, setEmployees] = useState([]);
   const [showBatchUpload, setShowBatchUpload] = useState(false);
 
@@ -52,9 +51,15 @@ export default function Home() {
       </Head>
 
       <br />
+
       <div className="h-screen overflow-hidden">
         <div className="flex flex-wrap ">
-          <p className="text-black font-light">
+          <p
+            className="text-black font-light"
+            onClick={() => {
+              setIsShowEmployee(true);
+            }}
+          >
             Welcome Jamal. <br />
             <p className="font-bold text-lg">
               What would you like to do today?
