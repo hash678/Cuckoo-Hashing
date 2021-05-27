@@ -1,29 +1,29 @@
 .fullscreen-modal.modal-dialog  {
-    position: absolute;
+    position: fixed;
+    transition-duration: 2s;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0,0,0,0.7);
+
+    height: 100vh;
+    width: 100vw;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     }
 
-.fullscreen-modal .modal-content {
-    position: fixed;
-    top: 50px;
-    left: 50px;
-    right: 50px;
+.fullscreen-modal {
     overflow: scroll;
-    bottom: 50px;
 }
 
-.Button{
-    text-transform:uppercase;
-    margin: 2rem  0 2rem;
-    border-radius: 8px;
-    font-weight: 400;
-    font-size: 0.9rem;
-}
-.Button:focus{
-    outline: none;
+.modal-content {
+    width: 100%;
+    height: 100%;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

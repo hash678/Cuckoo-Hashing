@@ -9,7 +9,7 @@ class Chain:
         return (2**self.d)
 
     def hashed(self, x):
-        return hash(x) % len(self)
+        return int(x) % len(self)
 
     def find(self, key):
         index = self.hashed(key) # Find the hashed index
@@ -63,7 +63,7 @@ class Chain:
         return lst
 
     # Removes item from the table
-    def discard(self, key):
+    def pop(self, key):
         index = self.hashed(key) # Get the hashed index
         for k,v in self.table[index]: # If item exists 
             if k == key:
