@@ -47,19 +47,15 @@ def RunTimerowInsertion(isCuckoo):
 def experiment():
     y = []  
     for i in range(100):
-        y.append( batchInsert()  )
-
-    print("x")
+        y.append( RunTimebatchInsertion()  )
 
     bins = int( math.sqrt(len(y)) )
     binWidth = (max(y) - min(y) ) / bins
     plt.hist (y , bins = bins , weights = np.ones (len (y) ) /( len (y) * binWidth ),
     edgecolor='black' )
-    plt.title("Number of times hypothesis is rejected")
-    plt.xlabel("The proportion of rejection count")
+    plt.title("Time taken")
+    plt.xlabel("")
     plt.ylabel("frequency")
     plt.show ()
 
 
-
-experiment()
