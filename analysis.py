@@ -1,10 +1,12 @@
-import time
+
+    
 from dataHandling import *
+import time
 from analysisHelper import *
 import numpy as np
 
-def RunTimebatchDeletion(isCuckoo):
-    definer(isCuckoo)
+
+def RunTimebatchDeletion():
     batchInsert()
 
     start = time.time()
@@ -16,8 +18,7 @@ def RunTimebatchDeletion(isCuckoo):
 
     return (end - start) #time taken
  
-def RunTimebatchInsertion(isCuckoo):
-    definer(isCuckoo)
+def RunTimebatchInsertion():
 
     start = time.time()
 
@@ -29,25 +30,32 @@ def RunTimebatchInsertion(isCuckoo):
     return (end - start) #time taken
 
 
-def RunTimerowInsertion(isCuckoo):
-    definer(isCuckoo)
-    data = batchList()
+def RunTimerowInsertion(n):
+    start = time.time()
 
+    rowsInsertion(n)
+
+    time.sleep(1)
+    end = time.time()
+
+    return (end - start) #time taken    
+
+
+def PlotRowRunTime():
     xvalues = []
     yvalues = []
-    for i in range(0, len(data), 1000):
+    for i in range(0, len(data), 500):
         xvalues.append(i)
-        yvalues.append( rowsInsertion(i) )
+        yvalues.append( RunTimerowInsertion(i) )
 
     plot(xvalues, yvalues)
-
 
     
 
 def experiment():
     y = []  
-    for i in range(100):
-        y.append( RunTimebatchInsertion(True)  )
+    for i in range(10):
+        y.append( RunTimebatchInsertion()  )
 
     bins = int( math.sqrt(len(y)) )
     binWidth = (max(y) - min(y) ) / bins
@@ -59,4 +67,5 @@ def experiment():
     plt.show ()
 
 
-experiment()
+PlotRowRunTime()
+

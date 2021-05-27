@@ -2,31 +2,24 @@ from cuckoo import *
 from chain  import *
 import csv
 
-isCuckoo = None
+isCuckoo = True
 table = None
-
-def definer(cuckoo):
-    isCuckoo = cuckoo
 
 if isCuckoo:
     table = Cuckoo()
-if not isCuckoo:
-    table = Chain()
+else:
+    table = Chain()    
 
 
-def batchList():
-    with open('records.csv', newline='') as f:
-        reader = csv.reader(f)
-        data = list(reader)
+with open('records.csv', newline='') as f:
+    reader = csv.reader(f)
+    data = list(reader)
 
-    return data
+cols = data[0]
+del data[0]
+
 
 def batchInsert():
-    data = batchList()
-
-    cols = data[0]
-    del data[0]
-
     for entry in data:
         id = entry[0]
         curr_data = dict()
@@ -34,15 +27,11 @@ def batchInsert():
             curr_data[cols[i]] = entry[i]
         table[id] = curr_data
 
+    return table
 
 
-def rowsInsertion(rows):
-    data = batchList()
-
-    cols = data[0]
-    del data[0]
-
-    for entry in data[0:rows]:
+def rowsInsertion(rowNum):
+    for entry in data [0:rowNum]:
         id = entry[0]
         curr_data = dict()
         for i in range(0, len(cols) ):
@@ -53,6 +42,3 @@ def rowsInsertion(rows):
 def batchDeletion():
     for key in table.keys():
         table.pop(key)
-    
-
-
