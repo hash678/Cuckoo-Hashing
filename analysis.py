@@ -47,7 +47,7 @@ def RunTimerowInsertion(isCuckoo):
 def experiment():
     y = []  
     for i in range(100):
-        y.append( RunTimebatchInsertion()  )
+        y.append( RunTimebatchInsertion(True)  )
 
     bins = int( math.sqrt(len(y)) )
     binWidth = (max(y) - min(y) ) / bins
@@ -59,3 +59,4 @@ def experiment():
     plt.show ()
 
 
+experiment()
