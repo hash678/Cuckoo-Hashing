@@ -5,7 +5,7 @@ export default function DefaultLayout(props) {
   return (
     <div className="h-screen flex flex-col">
       <NavigationBar />
-      <div className="mb-auto px-16">
+      <div className="mb-auto px-16 py-8">
       {props.children}
       </div>
       <Footer/>
